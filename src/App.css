@@ -1,3 +1,35 @@
+/* Global Custom Properties */
+:root {
+  --main-bg-color: #fff;
+  --main-accent-bg-color: rgb(45, 111, 211);
+  --main-light-text-color: #fff;
+  --main-dark-text-color: rgb(48, 48, 48);
+  --main-highlight-text-color: yellow;
+  --main-error-text-color: red;
+
+  --main-standard-text-padding: 10px;
+}
+
+.dividing_line_main {
+  border-bottom: 1px solid var(--main-dark-text-color);
+  padding: 3px 0;
+}
+
+.dividing_line_secondary {
+  border-bottom: 1px dotted rgb(88, 88, 88)
+  ;
+  padding: 3px 0;
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+/* For mobile phones: */
+
+
 /* .App {
   text-align: center;
 } */
