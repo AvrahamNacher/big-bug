@@ -1,0 +1,27 @@
+#login {
+    padding: 100px;
+}
+
+#loginContainer {
+    height: 50vh;
+    width: 50vw;
+    border: 10px solid var(--main-header-color);
+    margin: 0 auto;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginContainer input {
+    max-width: 20vw;
+    font-size: 1.4rem;
+    padding: 5px;
+}
+
+#loginContainer div {
+    display: flex;
+
+}

@@ -3,13 +3,22 @@
 // https://medium.com/allenhwkim/mobile-friendly-table-b0cb066dbc0e
 
 import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom"
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BugListView from './components/BugListView';
+import Login from './components/Login'
+import Register from './components/Register'
 
 import './App.css';
 
 function App() {
+  
   const [ user, setUser ] = useState("Bob");
   const [ bugList, setBugList ] = useState([
     { 
@@ -71,10 +80,33 @@ function App() {
   ])
 
   return (
-    <div className="App">
-      <Header user={user}/>
-      <Sidebar />
-      <BugListView bugList={bugList} setBugList={ newList => setBugList(newList)} setUser={ newUser => setUser(newUser)}/>
+    <div id="app">
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Login />
+  
+            {/* <Register /> */}
+
+
+            HOME
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path={["/bug/"]}>
+            <Header user={user}/>
+            <Sidebar />
+            Bug
+            <BugListView bugList={bugList} setBugList={ newList => setBugList(newList)} setUser={ newUser => setUser(newUser)}/>
+          </Route>
+          {/* <Route path="/bug/">
+          </Route> */}
+        </Switch>
+      </Router>
+
+
+
     </div>
   );
 }
