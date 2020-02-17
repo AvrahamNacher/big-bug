@@ -1,6 +1,7 @@
 async function checkLoginInfo(userData, callBackResponse) {
     var request = require('request');
-    const { email, pwd } = userData;
+    const { email = '', pwd = '' } = userData;
+    console.log (`email ${email} ${pwd}`);
 
         request(
             {

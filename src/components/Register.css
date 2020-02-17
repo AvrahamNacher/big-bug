@@ -1,0 +1,29 @@
+#register {
+    padding: 100px;
+}
+
+#registerContainer {
+    height: 50vh;
+    width: 50vw;
+    border: 10px solid var(--main-header-color);
+    margin: 0 auto;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+#registerContainer input {
+    min-width: 15vw;
+    max-width: 20vw;
+    font-size: 1.4rem;
+    padding: 5px;
+}
+
+#registerContainer div {
+    display: flex;
+    justify-content: space-evenly;
+
+}
