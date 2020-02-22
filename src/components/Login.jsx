@@ -8,13 +8,22 @@ import './Login.css'
 
 
 export default function Login(props) {
-    const [userLoginData, setUserLoginData] = useState("");
+    const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
+    const [loginError, setLoginError] = useState(false);
 
     function login(e) {
         console.log("login request", e);
         let callBackResponse = data => {
             console.log("Data received from CallBack = ", data);
+            // debugger;
+            if (data === -1) {
+                setLoginError(true);
+                setUserLoginData({ email: "", pwd: "" })
+            } else {
+                setLoginError(false);
+            }
         }
+        // db.getHello(callBackResponse);
         db.checkLoginInfo(userLoginData, callBackResponse);
     }
 
@@ -26,13 +35,18 @@ export default function Login(props) {
     return (
         <div id="login">
             <div id="loginContainer">
-                <input
-                    onInput={e => handleInput(e.target)} type="text" name="email" placeholder="email"></input>
-                <input onInput={e => handleInput(e.target)} type="password" name="pwd" placeholder="password"></input>
+                {loginError && <div className="error bold-font">Incorrect login. Please check your details and try again.</div>}
                 <div>
-                    <Link to="/register"><input className="button" type="button" value="Register"></input></Link>
-                    <input className="button" onClick={e => login(e)} type="button" value="Login"></input>
+                    <label htmlFor="loginEmail">Email:</label>
+                    <input
+                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={userLoginData.email}></input>
                 </div>
+                <div>
+                    <label htmlFor="loginPassword">Password:</label>
+                    <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={userLoginData.pwd}></input>
+                </div>
+                <input id="loginButton" className="button" onClick={e => login(e)} type="button" value="Login"></input>
+                <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link>
 
             </div>
 
