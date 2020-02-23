@@ -20,6 +20,9 @@ import './App.css';
 function App() {
   
   const [ user, setUser ] = useState("Bob");
+  const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
+  const [view, setView] = useState("login");
+
   const [ bugList, setBugList ] = useState([
     { 
       id: "dc-12", 
@@ -84,7 +87,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Login />
+            <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}}/>
   
             {/* <Register /> */}
 

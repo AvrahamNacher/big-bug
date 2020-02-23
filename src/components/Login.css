@@ -58,6 +58,7 @@
 
 #loginButton:hover {
     color: var(--main-highlight-text-color);
+    /* font-weight: 700; */
 }
 
 #registerButton {

@@ -8,7 +8,7 @@ import './Login.css'
 
 
 export default function Login(props) {
-    const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
+    // const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
     const [loginError, setLoginError] = useState(false);
 
     function login(e) {
@@ -18,18 +18,19 @@ export default function Login(props) {
             // debugger;
             if (data === -1) {
                 setLoginError(true);
-                setUserLoginData({ email: "", pwd: "" })
+                props.setUserLoginData({ email: "", pwd: "" });
+
             } else {
                 setLoginError(false);
             }
         }
         // db.getHello(callBackResponse);
-        db.checkLoginInfo(userLoginData, callBackResponse);
+        db.checkLoginInfo(props.userLoginData, callBackResponse);
     }
 
     function handleInput(target) {
         const { name, value } = target;
-        setUserLoginData(oldData => ({ ...userLoginData, [name]: value }));
+        props.setUserLoginData({ ...props.userLoginData, [name]: value });
     }
 
     return (
@@ -39,11 +40,11 @@ export default function Login(props) {
                 <div>
                     <label htmlFor="loginEmail">Email:</label>
                     <input
-                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={userLoginData.email}></input>
+                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={props.userLoginData.email}></input>
                 </div>
                 <div>
                     <label htmlFor="loginPassword">Password:</label>
-                    <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={userLoginData.pwd}></input>
+                    <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={props.userLoginData.pwd}></input>
                 </div>
                 <input id="loginButton" className="button" onClick={e => login(e)} type="button" value="Login"></input>
                 <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link>
