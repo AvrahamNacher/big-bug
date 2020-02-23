@@ -58,13 +58,12 @@ async function register(userData, callBackResponse) {
 //         }
 //     }, function (err, httpResponse, body) {
 //         let result = JSON.parse(body);
-//         // console.log(result.payload);
-//         cb(result.payload);
+//         console.log(body);
+//         cb(result);
 //     });
 // }
 
 export {
-    // getHello,
     checkLoginInfo,
     register
 }
