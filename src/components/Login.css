@@ -39,6 +39,7 @@
 #loginEmail,
 #loginPassword,
 #loginButton,
+#loginDisabled,
 #registerButton {
     width: 100vw;
     border-radius: 4px;
@@ -59,6 +60,14 @@
 #loginButton:hover {
     color: var(--main-highlight-text-color);
     /* font-weight: 700; */
+}
+
+#loginDisabled {
+    opacity: .6;
+    color: var(--main-light-text-color);
+    background-color: var(--main-accent-bg-color);
+    border: none;
+    margin-top: 25px;
 }
 
 #registerButton {

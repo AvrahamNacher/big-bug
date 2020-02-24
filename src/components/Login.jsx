@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as db from "../backend/dbUserRequests.js"
+import * as dbUser from "../backend/dbUserRequests.js";
 
 import './Login.css'
 
@@ -10,6 +10,10 @@ import './Login.css'
 export default function Login(props) {
     // const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
     const [loginError, setLoginError] = useState(false);
+
+    function allowLogin() {
+        return props.userLoginData.email.length > 0 && props.userLoginData.pwd.length > 0;
+    }
 
     function login(e) {
         console.log("login request", e);
@@ -22,10 +26,11 @@ export default function Login(props) {
 
             } else {
                 setLoginError(false);
+                props.setIsAuthenticated (true);
             }
         }
-        // db.getHello(callBackResponse);
-        db.checkLoginInfo(props.userLoginData, callBackResponse);
+        // dbUser.getHello(callBackResponse);
+        dbUser.checkLoginInfo(props.userLoginData, callBackResponse);
     }
 
     function handleInput(target) {
@@ -40,13 +45,17 @@ export default function Login(props) {
                 <div>
                     <label htmlFor="loginEmail">Email:</label>
                     <input
-                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={props.userLoginData.email}></input>
+                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={props.userLoginData.email} autoFocus></input>
                 </div>
                 <div>
                     <label htmlFor="loginPassword">Password:</label>
                     <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={props.userLoginData.pwd}></input>
                 </div>
-                <input id="loginButton" className="button" onClick={e => login(e)} type="button" value="Login"></input>
+                { allowLogin()
+                ? <input id="loginButton" className="button" onClick={e => login(e)} type="button" value="Login"></input>
+                : <input id="loginDisabled" className="button" type="button" value="Login"></input>
+                }
+                
                 <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link>
 
             </div>

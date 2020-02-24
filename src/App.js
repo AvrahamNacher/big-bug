@@ -12,18 +12,20 @@ import {
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BugListView from './components/BugListView';
-import Login from './components/Login'
-import Register from './components/Register'
+import Login from './components/Login';
+import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 
 import './App.css';
 
 function App() {
   
-  const [ user, setUser ] = useState("Bob");
+  // const [ user, setUser ] = useState("Bob");
   const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
-  const [view, setView] = useState("login");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [ bugList, setBugList ] = useState([{}]);
 
-  const [ bugList, setBugList ] = useState([
+  const [ oldBugList, setOldBugList ] = useState([
     { 
       id: "dc-12", 
       category: "ui",
@@ -87,21 +89,24 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}}/>
+            { isAuthenticated
+            ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)}/>
+            : <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
+            }
+            
+            
   
             {/* <Register /> */}
 
-
-            HOME
           </Route>
           <Route path="/register">
             <Register />
           </Route>
           <Route path={["/bug/"]}>
-            <Header user={user}/>
+            {/* <Header user={user}/> */}
             <Sidebar />
             Bug
-            <BugListView bugList={bugList} setBugList={ newList => setBugList(newList)} setUser={ newUser => setUser(newUser)}/>
+            <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
           </Route>
           {/* <Route path="/bug/">
           </Route> */}

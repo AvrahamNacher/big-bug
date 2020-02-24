@@ -4,36 +4,37 @@ import BugListViewHeader from './BugListViewHeader'
 import './BugListView.css'
 
 export default function BugListView (props) {
-    function listBugs (bugList) {
+    function listBugs () {
 
-        function testClick() {
-            console.log("clicked ID");
-            props.setUser("aa");
-        }
+        // debugger;
         
-        return bugList.map( bug => {
+        return props.bugList.map( bug => {
             const { 
                 id,
-                title,
-                created,
-                assigned,
-                due,
-                status,
-                severity,
-                reproducable
+                bugTitle,
+                bugDescription,
+                bugCreatedDate,
+                bugCreatedBy,
+                bugAssignedTo,
+                bugDueDate,
+                bugStatus,
+                bugSeverity,
+                bugReproducableFrequency
                 } = bug; //destructuring
 
                 return (
                     <tr key={id}>
                         <td><input className="bug_list_view_item bug_list_view_check_box" type="checkbox" name="mainCheckAll"></input></td>
-                        <td onClick={testClick} className = "bug_list_view_item bug_list_view_bug_id">{id}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_title">{title}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_created">{created}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_assigned">{assigned}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_due">{due}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_status">{status}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_severity">{severity}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_reproducible">{reproducable}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_id">{id}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_title">{bugTitle}</td>
+                        {/* <td className = "bug_list_view_item bug_list_view_bug_description">{bugDescription}</td> */}
+                        <td className = "bug_list_view_item bug_list_view_bug_createdDate">{bugCreatedDate}</td>
+                        {/* <td className = "bug_list_view_item bug_list_view_bug_createdBy">{bugCreatedBy}</td> */}
+                        <td className = "bug_list_view_item bug_list_view_bug_assignedTo">{bugAssignedTo}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_dueDate">{bugDueDate}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_status">{bugStatus}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_severity">{bugSeverity}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_reproducibleFrequency">{bugReproducableFrequency}</td>
                     </tr>
                 )}
             );
@@ -46,14 +47,14 @@ export default function BugListView (props) {
                     <tr>
                         <th><input className="bug_list_view_item bug_list_view_check_box" type="checkbox" name="mainCheckAll"></input></th>
                         <BugListViewHeader 
-                            headerInfo={props.bugList[0]} 
+                            headerInfo={ props.bugList[0]}  
                             bugList={props.bugList} 
                             setBugList={props.setBugList}
                         />
                     </tr>
                 </thead>
                 <tbody>
-                    {listBugs(props.bugList)}
+                    {listBugs()}
                 </tbody>
             </table>
         </div>
