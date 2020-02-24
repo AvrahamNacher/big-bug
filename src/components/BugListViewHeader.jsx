@@ -7,25 +7,26 @@ let sortDirection = true;
 let previousSortColumnName = '';
 
 export default function BugListViewHeader(props) {
-    console.log("in bugHeader", props.headerInfo);
+    // console.log("in bugHeader", props.headerInfo);
 
-    function renameKeys(obj, newKeys) {
-        const keyValues = Object.keys(obj).map(key => {
-            const newKey = newKeys[key] || key;
-            return { [newKey]: obj[key] };
-        });
-        return Object.assign({}, ...keyValues);
-    }
+    // function renameKeys(obj, newKeys) {
+    //     const keyValues = Object.keys(obj).map(key => {
+    //         const newKey = newKeys[key] || key;
+    //         return { [newKey]: obj[key] };
+    //     });
+    //     return Object.assign({}, ...keyValues);
+    // }
 
 
     const bugListViewKeys = ['id', 'bugTitle', 'bugCreatedDate', 'bugAssignedTo', 'bugDueDate', 'bugStatus', 'bugSeverity', 'bugReproducableFrequency'];
-    const bugListViewKeysToDisplay = ['id', 'title', 'createdDate', 'assigned to', 'due', 'status', 'severity', 'reproducable'];
+    // TODO update header names, but retain sort option with real key names
+    // const bugListViewKeysToDisplay = ['id', 'title', 'createdDate', 'assigned to', 'due', 'status', 'severity', 'reproducable'];
     // debugger;
     let allKeys = Object.keys(props.headerInfo);
     let keysToShow = allKeys.filter( key => bugListViewKeys.includes(key));
     keysToShow = bugListViewKeys;
 
-    const newKeyNames = { bugTitle: "title", bugCreatedDate: "created"};
+    // const newKeyNames = { bugTitle: "title", bugCreatedDate: "created"};
     // keysToShow = renameKeys(keysToShow, newKeyNames);
 
     // create initial sort based on first key in list
