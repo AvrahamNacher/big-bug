@@ -15,6 +15,8 @@ import BugListView from './components/BugListView';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import CreateBug from './components/CreateBug';
+
 
 import './App.css';
 
@@ -22,7 +24,7 @@ function App() {
   
   // const [ user, setUser ] = useState("Bob");
   const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [ bugList, setBugList ] = useState([{}]);
 
   const [ oldBugList, setOldBugList ] = useState([
@@ -90,17 +92,17 @@ function App() {
         <Switch>
           <Route exact path="/">
             { isAuthenticated
-            ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)}/>
+            ? <CreateBug bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
+            // ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)}/>
             : <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
-            
-            
-  
-            {/* <Register /> */}
 
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/createBug">
+            <CreateBug />
           </Route>
           <Route path={["/bug/"]}>
             {/* <Header user={user}/> */}

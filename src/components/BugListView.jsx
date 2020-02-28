@@ -1,5 +1,6 @@
 import React from 'react';
-import BugListViewHeader from './BugListViewHeader'
+import { Link } from 'react-router-dom';
+import BugListViewHeader from './BugListViewHeader';
 
 import './BugListView.css'
 
@@ -57,6 +58,8 @@ export default function BugListView (props) {
                     {listBugs()}
                 </tbody>
             </table>
+                <Link to="/createBug">createBug</Link>
+
         </div>
     );
 }
