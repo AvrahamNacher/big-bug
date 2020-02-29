@@ -8,28 +8,25 @@ import './Login.css'
 
 
 export default function Login(props) {
-    // const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
     const [loginError, setLoginError] = useState(false);
 
     function allowLogin() {
         return props.userLoginData.email.length > 0 && props.userLoginData.pwd.length > 0;
     }
 
-    function login(e) {
-        console.log("login request", e);
+    function login() {
+        console.log("login request");
         let callBackResponse = data => {
             console.log("Data received from CallBack = ", data);
             // debugger;
+            props.setUserLoginData({ email: "", pwd: "" });
             if (data === -1) {
                 setLoginError(true);
-                props.setUserLoginData({ email: "", pwd: "" });
-
             } else {
                 setLoginError(false);
                 props.setIsAuthenticated (true);
             }
         }
-        // dbUser.getHello(callBackResponse);
         dbUser.checkLoginInfo(props.userLoginData, callBackResponse);
     }
 
@@ -52,7 +49,7 @@ export default function Login(props) {
                     <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={props.userLoginData.pwd}></input>
                 </div>
                 { allowLogin()
-                ? <input id="loginButton" className="button" onClick={e => login(e)} type="button" value="Login"></input>
+                ? <input id="loginButton" className="button" onClick={login} type="button" value="Login"></input>
                 : <input id="loginDisabled" className="button" type="button" value="Login"></input>
                 }
                 

@@ -4,6 +4,7 @@
 :root {
   --main-bg-color: rgb(241, 241, 241);
   --main-accent-bg-color: rgb(45, 111, 211);
+  --main-accent-bg-color-hover: rgb(65, 125, 214);
   --main-header-color: #4caf50;
   --main-light-text-color: #fff;
   --main-dark-text-color: rgb(48, 48, 48);
@@ -19,8 +20,7 @@
 }
 
 .dividing_line_secondary {
-  border-bottom: 1px dotted rgb(88, 88, 88)
-  ;
+  border-bottom: 1px dotted rgb(88, 88, 88);
   padding: 3px 0;
 }
 

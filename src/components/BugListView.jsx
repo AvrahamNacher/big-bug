@@ -13,9 +13,9 @@ export default function BugListView (props) {
             const { 
                 id,
                 bugTitle,
-                bugDescription,
+                // bugDescription,
                 bugCreatedDate,
-                bugCreatedBy,
+                // bugCreatedBy,
                 bugAssignedTo,
                 bugDueDate,
                 bugStatus,
@@ -45,7 +45,7 @@ export default function BugListView (props) {
 
             <table id="bug_list_view_table">
                 <thead>
-                    <tr>
+                    <tr key={0}>
                         <th><input className="bug_list_view_item bug_list_view_check_box" type="checkbox" name="mainCheckAll"></input></th>
                         <BugListViewHeader 
                             headerInfo={ props.bugList[0]}  

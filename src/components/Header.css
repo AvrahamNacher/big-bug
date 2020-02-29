@@ -13,3 +13,23 @@ header .menuHamberger {
     padding: 0 15px 0 15px;
     vertical-align: middle;
   }
+
+  #headerMenu {
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  .headerItem {
+      margin: auto 10px;
+      color: var(--main-light-text-color);
+  }
+
+  .headerItem a {
+      text-decoration: none;
+  }
+
+
+  .headerItem:hover {
+      /* background-color: var(--main-accent-bg-color-hover); */
+      cursor: pointer;
+  }
