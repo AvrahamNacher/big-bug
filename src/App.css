@@ -14,6 +14,22 @@
   --main-standard-text-padding: 10px;
 }
 
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-even {
+  display: flex;
+  justify-content: space-evenly;
+
+}
+
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .dividing_line_main {
   border-bottom: 1px solid var(--main-dark-text-color);
   padding: 3px 0;
@@ -30,6 +46,13 @@
 
 .bold-font {
   font-weight: 700;
+}
+
+.btn {
+  min-width: 15vw;
+  max-width: 20vw;
+  font-size: 1.4rem;
+  padding: 5px;
 }
 
 * {

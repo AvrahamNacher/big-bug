@@ -15,6 +15,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
+import EditBug from './components/EditBug';
 
 
 import './App.css';
@@ -45,19 +46,13 @@ function App() {
           <Route path="/createBug">
             <CreateBug />
           </Route>
-          <Route path={["/bug/"]}>
-            {/* <Header user={user}/> */}
-            <Sidebar />
-            Bug
-            <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
+          <Route path="/bug/:id">
+            {/* <Sidebar /> */}
+            <EditBug />
+            {/* <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/> */}
           </Route>
-          {/* <Route path="/bug/">
-          </Route> */}
         </Switch>
       </Router>
-
-
-
     </div>
   );
 }

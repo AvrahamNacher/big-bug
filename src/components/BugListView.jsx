@@ -26,16 +26,16 @@ export default function BugListView (props) {
                 return (
                     <tr key={id}>
                         <td><input className="bug_list_view_item bug_list_view_check_box" type="checkbox" name="mainCheckAll"></input></td>
-                        <td className = "bug_list_view_item bug_list_view_bug_id">{id}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_title">{bugTitle}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_id"><Link to={`/bug/${id}`}>{id}</Link></td>
+                        <td className = "bug_list_view_item bug_list_view_bug_title"><Link to={`/bug/${id}`}>{bugTitle}</Link></td>
                         {/* <td className = "bug_list_view_item bug_list_view_bug_description">{bugDescription}</td> */}
-                        <td className = "bug_list_view_item bug_list_view_bug_createdDate">{bugCreatedDate}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_createdDate"><Link to={`/bug/${id}`}>{bugCreatedDate}</Link></td>
                         {/* <td className = "bug_list_view_item bug_list_view_bug_createdBy">{bugCreatedBy}</td> */}
-                        <td className = "bug_list_view_item bug_list_view_bug_assignedTo">{bugAssignedTo}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_dueDate">{bugDueDate}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_status">{bugStatus}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_severity">{bugSeverity}</td>
-                        <td className = "bug_list_view_item bug_list_view_bug_reproducibleFrequency">{bugReproducableFrequency}</td>
+                        <td className = "bug_list_view_item bug_list_view_bug_assignedTo"><Link to={`/bug/${id}`}>{bugAssignedTo}</Link></td>
+                        <td className = "bug_list_view_item bug_list_view_bug_dueDate"><Link to={`/bug/${id}`}>{bugDueDate}</Link></td>
+                        <td className = "bug_list_view_item bug_list_view_bug_status"><Link to={`/bug/${id}`}>{bugStatus}</Link></td>
+                        <td className = "bug_list_view_item bug_list_view_bug_severity"><Link to={`/bug/${id}`}>{bugSeverity}</Link></td>
+                        <td className = "bug_list_view_item bug_list_view_bug_reproducibleFrequency"><Link to={`/bug/${id}`}>{bugReproducableFrequency}</Link></td>
                     </tr>
                 )}
             );
