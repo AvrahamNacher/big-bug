@@ -1,25 +1,62 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import * as dbBugs from '../backend/dbBugRequests';
 
 export default function EditBug(props) {
+    function resetBugFields() {
+        return (
+            {
+                id: "",
+                bugTitle: "",
+                bugDescription: "",
+                bugCreatedDate: "",
+                bugCreatedBy: "",
+                bugAssignedTo: "",
+                bugDueDate: "",
+                bugStatus: "",
+                bugSeverity: "",
+                bugReproducableFrequency: ""
+            }
+        );
+    }
+
     const [submitMessage, setSubmitMessage] = useState({ message: "Edit Bug Details", messageType: "success", show: true });
-    const [newBug, setNewBug] = useState([]);
+    const [newBug, setNewBug] = useState(resetBugFields());
     // const [newBug, setNewBug] = useState(resetBugFields());
 
     let { id } = useParams();
+    // debugger;
+
+    const callback = response => {
+        console.log(response);
+        setNewBug({
+            id: response.id,
+            bugTitle: response.bugTitle,
+            bugDescription: response.bugDescription,
+            bugCreatedDate: response.bugCreatedDate,
+            bugCreatedBy: response.bugCreatedBy,
+            bugAssignedTo: response.bugAssignedTo,
+            bugDueDate: response.bugDueDate,
+            bugStatus: response.bugStatus,
+            bugSeverity: response.bugSeverity,
+            bugReproducableFrequency: response.bugReproducableFrequency
+        });
+    }
+    if (newBug.id === '') { dbBugs.getBug(id, callback); }
+
 
     const handleInput = e => {
         const { name, value } = e.target; // destructuring
         setNewBug({ ...newBug, [name]: value });
     }
-    
+
     return (
         <div>
             Bug # {id}!
             <div id="CreateBugForm">
                 {submitMessage.show && <h1>{submitMessage.message}</h1>}
                 <form>
-                {/* <form onSubmit={submitBug}> */}
+                    {/* <form onSubmit={submitBug}> */}
                     <div>
                         <label htmlFor="bugTitle">Title:</label>
                         <input onChange={handleInput} type="text" id="bugTitle" name="bugTitle" value={newBug.bugTitle}></input>
@@ -56,7 +93,7 @@ export default function EditBug(props) {
                         <Link to="/">
                             <input className="btn" type="button" value="Cancel" />
                         </Link>
-                        <input className="btn" type="submit" value="Submit New Bug"></input>
+                        <input className="btn" type="submit" value="Update Bug"></input>
                     </div>
                 </form>
             </div>

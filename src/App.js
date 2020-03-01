@@ -25,7 +25,7 @@ function App() {
   // const [ user, setUser ] = useState("Bob");
   const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [ bugList, setBugList ] = useState([{id:0}]);  // default id to prevent "unique key prop" error
+  const [ bugList, setBugList ] = useState([{id:''}]);  // default id to prevent "unique key prop" error
 
   return (
     <div id="app">
