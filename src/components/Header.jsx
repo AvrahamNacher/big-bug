@@ -7,9 +7,6 @@ import './Header.css';
 export default function Header(props) {
     return (
         <header>
-            {/* <img className="menuHamberger" src={menuHamburger} alt="MENU" /> */}
-
-            {/* Home */}
             {props.isAuthenticated
                 ? <div id="headerMenu">
                     {/* <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link> */}

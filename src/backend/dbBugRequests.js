@@ -71,6 +71,31 @@ function getBug(id, cb) {
   });
 }
 
+function updateBug(bug, cb) {
+  var request = require('request');
+
+  request({
+    method: 'POST',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/updateBug',
+    form: {
+      "id": bug.id,
+      "bugTitle": bug.bugTitle,
+      "bugDescription": bug.bugDescription,
+      "bugCreatedDate": bug.bugCreatedDate,
+      "bugCreatedBy": bug.bugCreatedBy,
+      "bugAssignedTo": bug.bugAssignedTo,
+      "bugDueDate": bug.bugDueDate,
+      "bugStatus": bug.bugStatus,
+      "bugSeverity": bug.bugSeverity,
+      "bugReproducableFrequency": bug.bugReproducableFrequency
+    }
+  }, function (err, httpResponse, body) {
+    console.log(body);
+    let response = JSON.parse(body);
+    cb(response.affectedRows);
+  });
+}
+
 function deleteBugs(idList, cb) {
   var request = require('request');
 
@@ -91,5 +116,6 @@ export {
   submitBug,
   getAllBugs,
   getBug,
+  updateBug,
   deleteBugs
 };

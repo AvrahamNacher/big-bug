@@ -58,7 +58,6 @@ export default function BugListView (props) {
                     {listBugs()}
                 </tbody>
             </table>
-                {/* <Link to="/createBug">createBug</Link> */}
 
         </div>
     );

@@ -49,6 +49,15 @@ export default function EditBug(props) {
         setNewBug({ ...newBug, [name]: value });
     }
 
+    const updateCallback = response => {
+        console.log("update callback: " + response);
+    }
+
+    const updateBug = e => {
+        e.preventDefault();
+        dbBugs.updateBug(newBug, updateCallback);
+    }
+
     const deleteCallback = response => {
         console.log(response);
     }
@@ -61,11 +70,9 @@ export default function EditBug(props) {
 
     return (
         <div>
-            Bug # {id}!
             <div id="CreateBugForm">
                 {submitMessage.show && <h1>{submitMessage.message}</h1>}
-                <form>
-                    {/* <form onSubmit={submitBug}> */}
+                    <form onSubmit={updateBug}>
                     <div>
                         <label htmlFor="bugTitle">Title:</label>
                         <input onChange={handleInput} type="text" id="bugTitle" name="bugTitle" value={newBug.bugTitle}></input>
