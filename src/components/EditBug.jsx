@@ -106,7 +106,7 @@ export default function EditBug(props) {
                     <input onChange={handleInput} type="text" id="bugStatus" name="bugStatus" value={newBug.bugStatus}></input>
                     <label htmlFor="bugSeverity">Severity:</label>
                     <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input>
-                    <label htmlFor="bugReproducableFrequency">Repoducable Frequency:</label>
+                    <label htmlFor="bugReproducableFrequency">Reproducable Frequency:</label>
                     <input onChange={handleInput} type="text" id="bugReproducableFrequency" name="bugReproducableFrequency" value={newBug.bugReproducableFrequency}></input>
                     <div className="flex-right">
                         <Link to="/">
