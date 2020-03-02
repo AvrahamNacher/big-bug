@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SelectUser from './SelectUser';
 import * as db from '../backend/dbBugRequests';
 
 import './CreateBug.css';
@@ -67,8 +68,13 @@ export default function CreateBug(props) {
                     </div>
                     <div>
                         <label htmlFor="bugAssignedTo">Assigned To:</label>
-                        <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input>
+                        {/* <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input> */}
+                        <SelectUser onChange={ user => setNewBug( {...newBug, bugAssignedTo:user})} userList={props.userList} />
                     </div>
+                    {/* <div>
+                        <label htmlFor="bugAssignedTo">Assigned To:</label>
+                        <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input>
+                    </div> */}
                     <div>
                         <label htmlFor="bugDueDate">Due Date:</label>
                         <input onChange={handleInput} type="text" id="bugDueDate" name="bugDueDate" value={newBug.bugDueDate}></input>
@@ -78,11 +84,11 @@ export default function CreateBug(props) {
                 <input onChange={handleInput} type="text" id="bugStatus" name="bugStatus" value={newBug.bugStatus}></input>
                 <label htmlFor="bugSeverity">Severity:</label>
                 <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input>
-                <label htmlFor="bugReproducableFrequency">Repoducable Frequency:</label>
+                <label htmlFor="bugReproducableFrequency">Reproducable Frequency:</label>
                 <input onChange={handleInput} type="text" id="bugReproducableFrequency" name="bugReproducableFrequency" value={newBug.bugReproducableFrequency}></input>
                 <div className="flex-right">
                     <Link to="/">
-                    <input className="btn" type="button" value="Cancel"/>
+                        <input className="btn" type="button" value="Cancel" />
                     </Link>
                     <input className="btn" type="submit" value="Submit New Bug"></input>
                 </div>

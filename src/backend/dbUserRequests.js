@@ -46,6 +46,28 @@ async function register(userData, callBackResponse) {
     });
 }
 
+var request = require('request');
+
+function getUsersCB() {
+    return new Promise(function (resolve, reject) {
+        request({
+            method: 'POST',
+            url: 'https://bigbug-365ff5.appdrag.site/api/users/getUsers',
+            form: {
+                "AD_PageNbr": "1",
+                "AD_PageSize": "500"
+            }
+        }, function (err, httpResponse, body) {
+            if (err != null) {
+                resolve(err);
+            } else {
+                let result = JSON.parse(body).Table;
+                resolve(result);
+            }
+        });
+    });
+}
+
 // async function getHello(cb) {
 //     var request = require('request');
 //     // console.log("in getHello");
@@ -66,5 +88,6 @@ async function register(userData, callBackResponse) {
 export {
     // getHello,
     checkLoginInfo,
-    register
+    register,
+    getUsersCB
 }

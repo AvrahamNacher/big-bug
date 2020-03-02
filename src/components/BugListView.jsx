@@ -54,7 +54,12 @@ export default function BugListView(props) {
                 bugSeverity,
                 bugReproducableFrequency
             } = bug; //destructuring
-            // setBugsToDelete()
+            // let bugAssignedToName = props.userList.filter( user => user.id !== bugAssignedTo);
+            let bugAssignedToName = props.userList.filter( user => user.id == bugAssignedTo);
+            console.log("list to match = " + bugAssignedTo);
+            if (bugAssignedTo > 0) { console.log(bugAssignedToName[0].firstName + " " + bugAssignedToName[0].lastName); }
+            if (bugAssignedTo > 0) { bugAssignedToName = (bugAssignedToName[0].firstName + " " + bugAssignedToName[0].lastName); }
+            // debugger;
 
             return (
                 <tr key={id}>
@@ -64,7 +69,7 @@ export default function BugListView(props) {
                     {/* <td className = "bug_list_view_item bug_list_view_bug_description">{bugDescription}</td> */}
                     <td className="bug_list_view_item bug_list_view_bug_createdDate"><Link to={`/bug/${id}`}>{bugCreatedDate}</Link></td>
                     {/* <td className = "bug_list_view_item bug_list_view_bug_createdBy">{bugCreatedBy}</td> */}
-                    <td className="bug_list_view_item bug_list_view_bug_assignedTo"><Link to={`/bug/${id}`}>{bugAssignedTo}</Link></td>
+                    <td className="bug_list_view_item bug_list_view_bug_assignedTo"><Link to={`/bug/${id}`}>{bugAssignedToName}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_dueDate"><Link to={`/bug/${id}`}>{bugDueDate}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_status"><Link to={`/bug/${id}`}>{bugStatus}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_severity"><Link to={`/bug/${id}`}>{bugSeverity}</Link></td>

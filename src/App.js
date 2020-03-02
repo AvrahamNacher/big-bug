@@ -26,6 +26,7 @@ function App() {
   const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [ bugList, setBugList ] = useState([{id:''}]);  // default id to prevent "unique key prop" error
+  const [userList, setUserList] = useState([]);
 
   return (
     <div id="app">
@@ -35,7 +36,7 @@ function App() {
           <Route exact path="/">
             { isAuthenticated
             // ? <CreateBug bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
-            ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)}/>
+            ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)} userList={userList} setUserList={ users => setUserList(users) }/>
             : <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
 
@@ -44,7 +45,7 @@ function App() {
             <Register />
           </Route>
           <Route path="/createBug">
-            <CreateBug />
+            <CreateBug userList={userList}/>
           </Route>
           <Route path="/bug/:id">
             {/* <Sidebar /> */}
