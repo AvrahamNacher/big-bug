@@ -44,10 +44,19 @@ export default function EditBug(props) {
     }
     if (newBug.id === '') { dbBugs.getBug(id, callback); }
 
-
     const handleInput = e => {
         const { name, value } = e.target; // destructuring
         setNewBug({ ...newBug, [name]: value });
+    }
+
+    const deleteCallback = response => {
+        console.log(response);
+    }
+
+    const deleteBug = () => {
+        let SQL = `(id = ${id})`;
+        console.log(`SQL = ${SQL}`);
+        dbBugs.deleteBugs(SQL, deleteCallback);
     }
 
     return (
@@ -92,6 +101,9 @@ export default function EditBug(props) {
                     <div className="flex-right">
                         <Link to="/">
                             <input className="btn" type="button" value="Cancel" />
+                        </Link>
+                        <Link to="/">
+                            <input onClick={deleteBug} className="btn" type="button" value="Delete" />
                         </Link>
                         <input className="btn" type="submit" value="Update Bug"></input>
                     </div>

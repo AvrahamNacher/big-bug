@@ -58,7 +58,7 @@ function getBug(id, cb) {
 
   request({
     method: 'POST',
-    url: 'https://bigbug-365ff5.appdrag.site/api/getBug',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/getBug',
     form: {
       "id": id,
       "AD_PageNbr": "1",
@@ -71,8 +71,25 @@ function getBug(id, cb) {
   });
 }
 
+function deleteBugs(idList, cb) {
+  var request = require('request');
+
+  request({
+    method: 'POST',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/deleteBugs',
+    form: {
+      "idList": idList // "(id = 5) OR (id = 2)"
+    }
+  }, function (err, httpResponse, body) {
+    console.log(body);
+    let response = JSON.parse(body);
+    cb(response);
+  });
+}
+
 export {
   submitBug,
   getAllBugs,
-  getBug
+  getBug,
+  deleteBugs
 };
