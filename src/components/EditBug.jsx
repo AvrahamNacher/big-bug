@@ -53,8 +53,7 @@ export default function EditBug(props) {
         console.log("update callback: " + response);
     }
 
-    const updateBug = e => {
-        e.preventDefault();
+    const updateBug = () => {
         dbBugs.updateBug(newBug, updateCallback);
     }
 
@@ -72,7 +71,7 @@ export default function EditBug(props) {
         <div>
             <div id="CreateBugForm">
                 {submitMessage.show && <h1>{submitMessage.message}</h1>}
-                    <form onSubmit={updateBug}>
+                <form onSubmit={updateBug}>
                     <div>
                         <label htmlFor="bugTitle">Title:</label>
                         <input onChange={handleInput} type="text" id="bugTitle" name="bugTitle" value={newBug.bugTitle}></input>
@@ -112,7 +111,9 @@ export default function EditBug(props) {
                         <Link to="/">
                             <input onClick={deleteBug} className="btn" type="button" value="Delete" />
                         </Link>
-                        <input className="btn" type="submit" value="Update Bug"></input>
+                        <Link to="/">
+                            <input onClick={updateBug} className="btn" type="button" value="Update Bug"></input>
+                        </Link>
                     </div>
                 </form>
             </div>

@@ -32,7 +32,7 @@ export default function CreateBug(props) {
     const callback = result => {
         if (result === '1') {
             // show success message
-            setSubmitMessage({ message: "New bug successfully created", messageType: "success", show: true });
+            setSubmitMessage({ message: "New bug successfully entered.", messageType: "success", show: true });
             setNewBug(resetBugFields());
         } else {
             setSubmitMessage({ message: `Error creating bug. (${result})`, messageType: "failure", show: true });
