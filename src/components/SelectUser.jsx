@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import * as dbUsers from '../backend/dbUserRequests';
 
 export default function SelectUser(props) {
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState(props.user);
+    console.log ("SelectUser user = " + props.user);
     // const [userList, setUserList] = useState([]);
 
     // useEffect( () => {
@@ -28,7 +29,7 @@ export default function SelectUser(props) {
     }
 
     return (
-        <select value={user} onChange={handleChange}>
+        <select value={props.user} onChange={handleChange}>
             {/* need to add UNASSIGNED */}
             {showList()}
         </select>

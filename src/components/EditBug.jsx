@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import SelectUser from './SelectUser';
 import * as dbBugs from '../backend/dbBugRequests';
 
 export default function EditBug(props) {
@@ -43,6 +44,8 @@ export default function EditBug(props) {
         });
     }
     if (newBug.id === '') { dbBugs.getBug(id, callback); }
+
+    console.log ("EditBug user = " + newBug.bugAssignedTo);
 
     const handleInput = e => {
         const { name, value } = e.target; // destructuring
@@ -91,7 +94,8 @@ export default function EditBug(props) {
                         </div>
                         <div>
                             <label htmlFor="bugAssignedTo">Assigned To:</label>
-                            <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input>
+                            <SelectUser onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })} userList={props.userList} user={newBug.bugAssignedTo}/>
+                            {/* <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input> */}
                         </div>
                         <div>
                             <label htmlFor="bugDueDate">Due Date:</label>

@@ -49,7 +49,7 @@ function App() {
           </Route>
           <Route path="/bug/:id">
             {/* <Sidebar /> */}
-            <EditBug />
+            <EditBug userList={userList}/>
             {/* <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/> */}
           </Route>
         </Switch>
