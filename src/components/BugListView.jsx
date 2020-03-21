@@ -55,7 +55,7 @@ export default function BugListView(props) {
                 bugDueDate,
                 bugStatus,
                 bugSeverity,
-                bugReproducableFrequency
+                bugReproducableFrequency,
             } = bug; //destructuring
 
             let bugAssignedToName = props.userList.filter(user => user.id === parseInt(bugAssignedTo));
