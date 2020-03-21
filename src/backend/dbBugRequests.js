@@ -112,10 +112,43 @@ function deleteBugs(idList, cb) {
   });
 }
 
+async function getBugSeverityLevels(cb) {
+  var request = require('request');
+
+  request({
+    method: 'POST',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/getBugSeverityLevels',
+    form: {
+      "AD_PageNbr": "1",
+      "AD_PageSize": "500"
+    }
+  }, function (err, httpResponse, body) {
+    let response = JSON.parse(body);
+    cb(response.Table);
+  });
+}
+
+function getBugStatusStages(cb) {
+  var request = require('request');
+
+  request({
+    method: 'POST',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/getBugStatusStages',
+    form: {
+      "AD_PageNbr": "1",
+      "AD_PageSize": "500"
+    }
+  }, function (err, httpResponse, body) {
+    console.log(body);
+  });
+}
+
 export {
   submitBug,
   getAllBugs,
   getBug,
   updateBug,
-  deleteBugs
+  deleteBugs,
+  getBugSeverityLevels,
+  getBugStatusStages
 };

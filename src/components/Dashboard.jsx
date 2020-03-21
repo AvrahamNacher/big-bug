@@ -5,26 +5,29 @@ import BugListView from './BugListView.jsx';
 
 export default function Dashboard(props) {
 
-    // console.log("in Dashboard");
-    // const callBack = bugList => {console.log(bugList); props.setBugList(bugList);}
-    const callBack = bugList => {props.setBugList(bugList);}
+    const callBack = bugList => { props.setBugList(bugList); }
 
     const generateUserList = async () => {
         let list = await dbUsers.getUsersCB();
-        console.log (list);
+        list.unshift({id: 0, firstName: "Unassigned", lastName: "", email: ""});
         props.setUserList(list);
     }
-    
-    useEffect ( () => {
+
+    const usersCallback = userList => { props.setUserList(userList); }
+
+    useEffect(() => {
         dbBugs.getAllBugs(callBack);
-        // console.log ("call to getAllBugs");
         generateUserList();
-    },[]);
+    }, []);
 
     return (
-                <div>
-                    <BugListView bugList={props.bugList} setBugList={ props.setBugList } userList={props.userList} />
-                </div>
-           
+        <div>
+            <BugListView 
+                bugList={props.bugList} 
+                setBugList={props.setBugList} 
+                userList={props.userList}
+                bugSeverityLevels={props.bugSeverityLevels}
+            />
+        </div>
     )
 }

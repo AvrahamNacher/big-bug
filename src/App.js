@@ -16,6 +16,8 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
+import * as dbBugs from '../src/backend/dbBugRequests';
+
 
 
 import './App.css';
@@ -25,8 +27,15 @@ function App() {
   // const [ user, setUser ] = useState("Bob");
   const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [ bugList, setBugList ] = useState([{id:''}]);  // default id to prevent "unique key prop" error
+  const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
+  const [bugSeverityLevels, setBugSeverityLevels] = useState([]); // TODO 
+
+  if (bugSeverityLevels.length === 0) {
+    dbBugs.getBugSeverityLevels(async (levels) => {
+      setBugSeverityLevels(levels);
+    });
+  }
 
   return (
     <div id="app">
@@ -36,7 +45,13 @@ function App() {
           <Route exact path="/">
             { isAuthenticated
             // ? <CreateBug bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
-            ? <Dashboard bugList={bugList} setBugList= { newList => setBugList(newList)} userList={userList} setUserList={ users => setUserList(users) }/>
+            ? <Dashboard 
+                bugList={bugList} 
+                setBugList= { newList => setBugList(newList)} 
+                userList={userList} 
+                setUserList={ users => setUserList(users)}
+                bugSeverityLevels={bugSeverityLevels}
+                />
             : <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
 
@@ -45,11 +60,11 @@ function App() {
             <Register />
           </Route>
           <Route path="/createBug">
-            <CreateBug userList={userList}/>
+            <CreateBug userList={userList} bugSeverityLevels={bugSeverityLevels}/>
           </Route>
           <Route path="/bug/:id">
             {/* <Sidebar /> */}
-            <EditBug userList={userList}/>
+            <EditBug userList={userList} bugSeverityLevels={bugSeverityLevels}/>
             {/* <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/> */}
           </Route>
         </Switch>
