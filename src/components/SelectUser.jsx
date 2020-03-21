@@ -30,7 +30,6 @@ export default function SelectUser(props) {
 
     return (
         <select value={props.user} onChange={handleChange}>
-            {/* need to add UNASSIGNED */}
             {showList()}
         </select>
     )

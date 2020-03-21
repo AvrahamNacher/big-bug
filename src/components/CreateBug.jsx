@@ -12,9 +12,9 @@ export default function CreateBug(props) {
             {
                 bugTitle: "",
                 bugDescription: "",
-                bugCreatedDate: "",
+                bugCreatedDate: new Date().toISOString().split('T')[0],
                 bugCreatedBy: "",
-                bugAssignedTo: "",
+                bugAssignedTo: "0",
                 bugDueDate: "",
                 bugStatus: "",
                 bugSeverity: "",
@@ -32,7 +32,6 @@ export default function CreateBug(props) {
 
     const callback = result => {
         if (result === '1') {
-            // show success message
             setSubmitMessage({ message: "New bug successfully entered.", messageType: "success", show: true });
             setNewBug(resetBugFields());
         } else {
@@ -77,7 +76,7 @@ export default function CreateBug(props) {
                     </div> */}
                     <div>
                         <label htmlFor="bugDueDate">Due Date:</label>
-                        <input onChange={handleInput} type="text" id="bugDueDate" name="bugDueDate" value={newBug.bugDueDate}></input>
+                        <input onChange={handleInput} type="date" id="bugDueDate" name="bugDueDate" value={newBug.bugDueDate}></input>
                     </div>
                 </div>
                 <label htmlFor="bugStatus">Status:</label>
