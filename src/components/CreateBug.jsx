@@ -83,7 +83,7 @@ export default function CreateBug(props) {
                 <label htmlFor="bugStatus">Status:</label>
                 <input onChange={handleInput} type="text" id="bugStatus" name="bugStatus" value={newBug.bugStatus}></input>
                 <label htmlFor="bugSeverity">Severity:</label>
-                <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input>
+                {/* <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input> */}
                 <SelectBugSeverityLevel onChange={bugLevel => setNewBug({...newBug, bugSeverity: bugLevel})} bugSeverityLevels={props.bugSeverityLevels} bugSeverity={newBug.bugSeverity}/>
                 <label htmlFor="bugReproducibleFrequency">Reproducible Frequency:</label>
                 <input onChange={handleInput} type="text" id="bugReproducibleFrequency" name="bugReproducibleFrequency" value={newBug.bugReproducableFrequency}></input>
