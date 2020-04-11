@@ -26,6 +26,7 @@ export default function Dashboard(props) {
                 bugList={props.bugList} 
                 setBugList={props.setBugList} 
                 userList={props.userList}
+                bugStatusStages={props.bugStatusStages}
                 bugSeverityLevels={props.bugSeverityLevels}
             />
         </div>

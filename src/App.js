@@ -18,18 +18,18 @@ import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
 import * as dbBugs from '../src/backend/dbBugRequests';
 
-
-
 import './App.css';
 
 function App() {
   
-  // const [ user, setUser ] = useState("Bob");
-  const [userLoginData, setUserLoginData] = useState({ email: "", pwd: "" });
+  const [currentUserData, setCurrentUserData] = useState({ email: "a@gmail.com", pwd: "" });
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
-  const [bugSeverityLevels, setBugSeverityLevels] = useState([]); // TODO 
+  const [bugSeverityLevels, setBugSeverityLevels] = useState([]);
+  const [bugStatusStages, setBugStatusStages] = useState([]);
+
+  console.log("App: userData", currentUserData);
 
   if (bugSeverityLevels.length === 0) {
     dbBugs.getBugSeverityLevels(async (levels) => {
@@ -37,10 +37,20 @@ function App() {
     });
   }
 
+  if (bugStatusStages.length === 0) {
+    dbBugs.getBugStatusStages(async (stages) => {
+      setBugStatusStages(stages);
+    });
+  }
+
   return (
     <div id="app">
       <Router>
-      <Header isAuthenticated={isAuthenticated} setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)}/>
+      <Header 
+        isAuthenticated={isAuthenticated} 
+        setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
+        currentUserData={currentUserData} 
+      />
         <Switch>
           <Route exact path="/">
             { isAuthenticated
@@ -51,8 +61,9 @@ function App() {
                 userList={userList} 
                 setUserList={ users => setUserList(users)}
                 bugSeverityLevels={bugSeverityLevels}
+                bugStatusStages={bugStatusStages}
                 />
-            : <Login userLoginData={userLoginData} setUserLoginData={ newData => {setUserLoginData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
+            : <Login currentUserData={currentUserData} setCurrentUserData={ newData => {setCurrentUserData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
 
           </Route>
@@ -60,12 +71,20 @@ function App() {
             <Register />
           </Route>
           <Route path="/createBug">
-            <CreateBug userList={userList} bugSeverityLevels={bugSeverityLevels}/>
+            <CreateBug 
+              // currentUser={}
+              userList={userList} 
+              bugSeverityLevels={bugSeverityLevels} 
+              bugStatusStages={bugStatusStages}
+            />
           </Route>
           <Route path="/bug/:id">
             {/* <Sidebar /> */}
-            <EditBug userList={userList} bugSeverityLevels={bugSeverityLevels}/>
-            {/* <BugListView bugList={bugList} setBugList ={ newList => setBugList(newList)}/> */}
+            <EditBug 
+              userList={userList} 
+              bugSeverityLevels={bugSeverityLevels} 
+              bugStatusStages={bugStatusStages}
+            />
           </Route>
         </Switch>
       </Router>

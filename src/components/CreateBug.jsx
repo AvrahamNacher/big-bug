@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SelectUser from './SelectUser';
-import SelectBugSeverityLevel from './SelectBugSeverityLevel'
+import SelectBugSeverityLevel from './SelectBugSeverityLevel';
+import SelectBugStatus from './SelectBugStatus';
 import * as db from '../backend/dbBugRequests';
 
 import './CreateBug.css';
@@ -17,7 +18,7 @@ export default function CreateBug(props) {
                 bugCreatedBy: "",
                 bugAssignedTo: "0",
                 bugDueDate: "",
-                bugStatus: "",
+                bugStatus: "1",
                 bugSeverity: "1",
                 bugReproducableFrequency: ""
             }
@@ -64,12 +65,14 @@ export default function CreateBug(props) {
                     </div>
                     <div>
                         <label htmlFor="bugCreatedBy">Created By:</label>
-                        <input onChange={handleInput} type="text" id="bugCreatedBy" name="bugCreatedBy" value={newBug.bugCreatedBy}></input>
+                        {/* TODO - user is logged in user */}
+                        <SelectUser user={2} userList={props.userList} onChange={ user => setNewBug( {...newBug, bugCreatedBy:user})} />
+                        {/* <input onChange={handleInput} type="text" id="bugCreatedBy" name="bugCreatedBy" value={newBug.bugCreatedBy}></input> */}
                     </div>
                     <div>
                         <label htmlFor="bugAssignedTo">Assigned To:</label>
                         {/* <input onChange={handleInput} type="text" id="bugAssignedTo" name="bugAssignedTo" value={newBug.bugAssignedTo}></input> */}
-                        <SelectUser onChange={ user => setNewBug( {...newBug, bugAssignedTo:user})} userList={props.userList} />
+                        <SelectUser userList={props.userList} onChange={ user => setNewBug( {...newBug, bugAssignedTo:user})} />
                     </div>
                     {/* <div>
                         <label htmlFor="bugAssignedTo">Assigned To:</label>
@@ -80,9 +83,10 @@ export default function CreateBug(props) {
                         <input onChange={handleInput} type="date" id="bugDueDate" name="bugDueDate" value={newBug.bugDueDate}></input>
                     </div>
                 </div>
-                <label htmlFor="bugStatus">Status:</label>
-                <input onChange={handleInput} type="text" id="bugStatus" name="bugStatus" value={newBug.bugStatus}></input>
-                <label htmlFor="bugSeverity">Severity:</label>
+                <SelectBugStatus bugStatusStages={props.bugStatusStages} bugStatus={newBug.bugStatus} onChange={ status => setNewBug({...newBug, bugStatus: status})}/>
+                {/* <label htmlFor="bugStatus">Status:</label> */}
+                {/* <input onChange={handleInput} type="text" id="bugStatus" name="bugStatus" value={newBug.bugStatus}></input> */}
+                {/* <label htmlFor="bugSeverity">Severity:</label> */}
                 {/* <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input> */}
                 <SelectBugSeverityLevel onChange={bugLevel => setNewBug({...newBug, bugSeverity: bugLevel})} bugSeverityLevels={props.bugSeverityLevels} bugSeverity={newBug.bugSeverity}/>
                 <label htmlFor="bugReproducibleFrequency">Reproducible Frequency:</label>

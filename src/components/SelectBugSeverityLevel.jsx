@@ -10,8 +10,11 @@ export default function SelectBugSeverityLevel(props) {
         props.onChange(e.target.value);
     }
     return (
-        <select value={props.bugSeverity} onChange={handleChange}>
+        <>
+        <label htmlFor="bugSeverity">Severity:</label>
+        <select id="bugSeverity" value={props.bugSeverity} onChange={handleChange}>
             {showList()}
         </select>
+        </>
     )
 }

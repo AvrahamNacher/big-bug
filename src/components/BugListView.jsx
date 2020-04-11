@@ -59,10 +59,12 @@ export default function BugListView(props) {
             } = bug; //destructuring
 
             let bugAssignedToName = props.userList.filter(user => user.id === parseInt(bugAssignedTo));
+            let bugStatusName;
             let bugSeverityName;
             try {
                 // console.log("list to match = " + bugAssignedTo + " name: " + bugAssignedToName[0]);
                 bugAssignedToName = (bugAssignedToName[0].firstName + " " + bugAssignedToName[0].lastName);
+                bugStatusName = props.bugStatusStages[parseInt(bugStatus)-1].status;
                 bugSeverityName = props.bugSeverityLevels[parseInt(bugSeverity)-1].SeverityLevel;
             }
             catch (error) {
@@ -84,7 +86,7 @@ export default function BugListView(props) {
                             : bugDueDate
                         }
                     </Link></td>
-                    <td className="bug_list_view_item bug_list_view_bug_status"><Link to={`/bug/${id}`}>{bugStatus}</Link></td>
+                    <td className="bug_list_view_item bug_list_view_bug_status"><Link to={`/bug/${id}`}>{bugStatusName}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_severity"><Link to={`/bug/${id}`}>{bugSeverityName}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_reproducibleFrequency"><Link to={`/bug/${id}`}>{bugReproducableFrequency}</Link></td>
                 </tr>

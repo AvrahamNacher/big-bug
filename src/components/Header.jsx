@@ -5,15 +5,18 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 // import '../img/menu-hamburger.png'
 export default function Header(props) {
+    const { firstName ="Default", lastName = "User"} = props.currentUserData;
     return (
         <header>
             {props.isAuthenticated
-                ? <div id="headerMenu">
-                    {/* <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link> */}
-                    <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem">Dashboard</div></Link>
-                    <Link to="/createBug" style={{ textDecoration: 'none' }}><div className="headerItem">Create Bug</div></Link>
-                    <i className="fa fa-cog" style={{marginTop:'5px'}}></i>
-                    <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem"><span onClick={()=>props.setIsAuthenticated(false)} type="text" >Logout</span></div></Link>
+                ? <div id="headerContainer">
+                    <div id="userName">Welcome, {firstName} {lastName}</div>
+                    <div id="headerMenu">
+                        <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem">Dashboard</div></Link>
+                        <Link to="/createBug" style={{ textDecoration: 'none' }}><div className="headerItem">Create Bug</div></Link>
+                        <i className="fa fa-cog" style={{ marginTop: '5px' }}></i>
+                        <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem"><span onClick={() => props.setIsAuthenticated(false)} type="text" >Logout</span></div></Link>
+                    </div>
                 </div>
                 : null}
         </header>

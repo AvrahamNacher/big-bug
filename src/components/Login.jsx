@@ -11,28 +11,29 @@ export default function Login(props) {
     const [loginError, setLoginError] = useState(false);
 
     function allowLogin() {
-        return props.userLoginData.email.length > 0 && props.userLoginData.pwd.length > 0;
+        return props.currentUserData.email.length > 0 && props.currentUserData.pwd.length > 0;
     }
 
     function login() {
         console.log("login request");
         let callBackResponse = data => {
             console.log("Data received from CallBack = ", data);
-            // debugger;
-            props.setUserLoginData({ email: "", pwd: "" });
+            // props.setCurrentUserData({ email: "", pwd: "" });
             if (data === -1) {
                 setLoginError(true);
             } else {
+                // debugger;
                 setLoginError(false);
+                props.setCurrentUserData(data);
                 props.setIsAuthenticated (true);
             }
         }
-        dbUser.checkLoginInfo(props.userLoginData, callBackResponse);
+        dbUser.checkLoginInfo(props.currentUserData, callBackResponse);
     }
 
     function handleInput(target) {
         const { name, value } = target;
-        props.setUserLoginData({ ...props.userLoginData, [name]: value });
+        props.setCurrentUserData({ ...props.currentUserData, [name]: value });
     }
 
     return (
@@ -42,11 +43,11 @@ export default function Login(props) {
                 <div>
                     <label htmlFor="loginEmail">Email:</label>
                     <input
-                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={props.userLoginData.email} autoFocus></input>
+                        onChange={e => handleInput(e.target)} id="loginEmail" type="text" name="email" value={props.currentUserData.email} autoFocus></input>
                 </div>
                 <div>
                     <label htmlFor="loginPassword">Password:</label>
-                    <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={props.userLoginData.pwd}></input>
+                    <input onChange={e => handleInput(e.target)} id="loginPassword" type="password" name="pwd" value={props.currentUserData.pwd}></input>
                 </div>
                 { allowLogin()
                 ? <input id="loginButton" className="button" onClick={login} type="button" value="Login"></input>

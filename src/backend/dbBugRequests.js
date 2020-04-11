@@ -140,6 +140,8 @@ function getBugStatusStages(cb) {
     }
   }, function (err, httpResponse, body) {
     console.log(body);
+    const response = JSON.parse(body);
+    cb(response.Table);
   });
 }
 
