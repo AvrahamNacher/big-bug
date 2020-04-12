@@ -139,7 +139,6 @@ function getBugStatusStages(cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    console.log(body);
     const response = JSON.parse(body);
     cb(response.Table);
   });

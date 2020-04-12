@@ -61,14 +61,16 @@ export default function BugListView(props) {
             let bugAssignedToName = props.userList.filter(user => user.id === parseInt(bugAssignedTo));
             let bugStatusName;
             let bugSeverityName;
-            try {
-                // console.log("list to match = " + bugAssignedTo + " name: " + bugAssignedToName[0]);
+            if (bugAssignedToName.length !== 0) {
                 bugAssignedToName = (bugAssignedToName[0].firstName + " " + bugAssignedToName[0].lastName);
-                bugStatusName = props.bugStatusStages[parseInt(bugStatus)-1].status;
-                bugSeverityName = props.bugSeverityLevels[parseInt(bugSeverity)-1].SeverityLevel;
             }
-            catch (error) {
-                console.error(error);
+
+            if (props.bugStatusStages.length !== 0 && bugStatus) {
+                bugStatusName = props.bugStatusStages[parseInt(bugStatus) - 1].status;
+            }
+
+            if (props.bugSeverityLevels.length !== 0 && bugSeverity) {
+                bugSeverityName = props.bugSeverityLevels[parseInt(bugSeverity) - 1].SeverityLevel;
             }
 
             return (

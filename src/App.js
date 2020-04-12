@@ -6,8 +6,10 @@ import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
-} from "react-router-dom"
+  Route,
+  Redirect
+
+} from "react-router-dom";
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BugListView from './components/BugListView';
@@ -22,14 +24,27 @@ import './App.css';
 
 function App() {
   
-  const [currentUserData, setCurrentUserData] = useState({ email: "a@gmail.com", pwd: "" });
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [loading, setLoading] = useState(true);  // TODO
+  const [currentUserData, setCurrentUserData] = useState({ email: "", pwd: "" });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
   const [bugSeverityLevels, setBugSeverityLevels] = useState([]);
   const [bugStatusStages, setBugStatusStages] = useState([]);
+  
+  // debugger;
 
-  console.log("App: userData", currentUserData);
+  // function checkIfAuthenticated() {
+  //   fetch("http://localhost:4000/user").then( x =>
+  //     x.json().then( y => {
+  //     setIsAuthenticated(true);
+  //     // How to get Current User in React from JWT Cookie
+  //     // https://www.youtube.com/watch?v=jsaOTcBe-dM
+  //     setCurrentUserData( {} );
+  //     setLoading(false);
+  //     })
+  //   );
+  // }
 
   if (bugSeverityLevels.length === 0) {
     dbBugs.getBugSeverityLevels(async (levels) => {
@@ -43,16 +58,32 @@ function App() {
     });
   }
 
+  const logout = () => {  // TODO - SPA authentification
+    // https://dev.to/rdegges/please-stop-using-local-storage-1i04
+    // https://medium.com/@jcbaey/authentication-in-spa-reactjs-and-vuejs-the-right-way-e4a9ac5cd9a3
+    // https://jcbaey.com/authentication-in-spa-reactjs-and-vuejs-the-right-way?utm_source=medium&utm_campaign=spa-authentication
+
+    console.log("App: logging out");
+    setIsAuthenticated(false);
+    localStorage.setItem('userInfo', {'firstName': 'default', 'lastName': 'user'});
+  }
+
+// debugger;
+  // if (loading) {
+  //   // return <div>Loading...</div>
+  // }
+
   return (
     <div id="app">
       <Router>
       <Header 
         isAuthenticated={isAuthenticated} 
+        logout={ () => logout() }
         setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
         currentUserData={currentUserData} 
       />
         <Switch>
-          <Route exact path="/">
+          <Route exact path={["/"]}>
             { isAuthenticated
             // ? <CreateBug bugList={bugList} setBugList ={ newList => setBugList(newList)}/>
             ? <Dashboard 
@@ -86,6 +117,7 @@ function App() {
               bugStatusStages={bugStatusStages}
             />
           </Route>
+          <Redirect to="/" />
         </Switch>
       </Router>
     </div>
