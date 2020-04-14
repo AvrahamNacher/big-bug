@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as db from '../backend/dbUserRequests.js';
+import * as dbUsers from '../backend/dbUserRequests.js';
 
 import './Register.css';
 
 export default function Register(props) {
-    const [userData, setUserData] = useState("");
-    function register(e) {
-        console.log("register request", e);
-        console.log(userData);
-        let callBackResponse = data => {
-            console.log("Data received from CallBack = ", data);
+    const [userData, setUserData] = useState({});
+
+    const isValidEmail = email => /^.+@.+\..+$/.test(email);
+
+    async function register() {
+        const { email } = userData;
+        console.log("register request");
+        console.log(email);
+        if (userData.hasOwnProperty('email') && email.length !== 0) {
+            console.log("is email");
+            console.log("valid?", isValidEmail(email));
+            if (isValidEmail(email)) {
+                const isUnique = await dbUsers.checkUniqueEmailCB(email);
+                if (isUnique.length === 0) {
+                    console.log("is unique", isUnique);
+                    let callBackResponse = data => {
+                        console.log("Data received from CallBack = ", data);
+                    }
+                    dbUsers.register(userData, callBackResponse);
+                } else {
+                    console.log("not unique", isUnique);
+                }
+            }
+        } else {
+            console.log("no email");
         }
-        db.register(userData, callBackResponse);
+
     }
 
     const handleInput = e => {
@@ -22,24 +41,41 @@ export default function Register(props) {
     }
 
     return (
-        <div id="register">
-            <div id="registerContainer">
-                <div className="flex-even">
-                    <input className="btn" onInput={handleInput} name="firstName" type="text" placeholder="First Name"></input>
-                    <input className="btn" onInput={handleInput} name="lastName" type="text" placeholder="Last Name"></input>
+        <div className="mainWindow">
+
+            <div className="centeredContainer" style={{ width: 'inherit' }}>
+                <div className="bold"><h1>Registration Information</h1></div>
+                <div className="flexRowContainer">
+                    <div className="flexColumnContainer inputFieldPadding">
+                        <label className="bold" htmlFor="firstName">First Name:</label>
+                        <input className="centeredContainerInput" onInput={handleInput} id="firstName" name="firstName" type="text"></input>
+                    </div>
+                    <div className="flexColumnContainer inputFieldPadding">
+                        <label className="bold" htmlFor="lastName">Last Name:</label>
+                        <input className="centeredContainerInput" onInput={handleInput} id="lastName" name="lastName" type="text"></input>
+                    </div>
                 </div>
-                <div className="flex-even">
-                    <input className="btn" onInput={handleInput} name="email" type="email" placeholder="Email"></input>
-                    <input className="btn" onInput={handleInput} name="pwd" type="password" placeholder="Password"></input>
+                <div className="flexColumnContainer inputFieldPadding">
+                    <label className="bold" htmlFor="email">Email:</label>
+                    <input className="centeredContainerInput" onInput={handleInput} id="email" name="email" type="email"></input>
                 </div>
-                <div className="flex-even">
-                    <span></span>
-                    <input className="btn" onInput={handleInput} name="pwdConfirm" type="password" placeholder="Confirm Password"></input>
+                <div className="flexRowContainer">
+                    <div className="flexColumnContainer inputFieldPadding">
+                        <label className="bold" htmlFor="password">Password:</label>
+                        <input className="centeredContainerInput" onInput={handleInput} id="password" name="pwd" type="password"></input>
+                    </div>
+                    <div className="flexColumnContainer inputFieldPadding">
+                        <label className="bold" htmlFor="pwdConfirm">Confirm Password:</label>
+                        <input className="centeredContainerInput" onInput={handleInput} id="pwdConfirm" name="pwdConfirm" type="password"></input>
+                    </div>
                 </div>
-                <input className="btn" onInput={handleInput} name="phone" type="text" placeholder="Phone"></input>
-                <div className="flex-even">
-                    <Link to="/"><input className="btn" type="button" value="Back"></input></Link>
-                    <input className="btn" onClick={() => register()} type="button" value="Create Account"></input>
+                <div className="flexColumnContainer inputFieldPadding">
+                    <label className="bold" htmlFor="phone">Phone:</label>
+                    <input className="centeredContainerInput" onInput={handleInput} id="phone" name="phone" type="text"></input>
+                </div>
+                <div className="flexRowContainer" style={{justifyContent:'center'}}>
+                    <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" type="button" value="Back"></input></Link>
+                    <input className="centeredContainerButton primaryButton buttonEnabled" onClick={() => register()} type="button" value="Create Account"></input>
                 </div>
             </div>
 

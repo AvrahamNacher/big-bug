@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as dbUser from "../backend/dbUserRequests.js";
 
-import './Login.css'
+// import './Login.css'
 
 
 export default function Login(props) {
@@ -32,7 +32,7 @@ export default function Login(props) {
             if (data === -1) {
                 setLoginError(true);
                 setInputFocus();
-                props.setCurrentUserData({ ...props.currentUserData, "email" : "", "pwd" : "" });
+                props.setCurrentUserData({ ...props.currentUserData, "email": "", "pwd": "" });
 
             } else {
                 // debugger;
@@ -57,23 +57,24 @@ export default function Login(props) {
     }
 
     return (
-        <div id="login">
-            <div id="loginContainer">
+        <div className="mainWindow">
+            <div className="centeredContainer narrowWindow">
                 {loginError && <div className="error bold-font">Incorrect login. Please check your details and try again.</div>}
-                <div>
-                    <label htmlFor="loginEmail">Email:</label>
-                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginEmail" type="text" name="email" value={props.currentUserData.email} autoFocus ref={inputRef} ></input>
+                <div className="flexColumnContainer">
+                    <label className="bold" htmlFor="loginEmail">Email:</label>
+                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginEmail" className="centeredContainerInput" type="text" name="email" value={props.currentUserData.email} autoFocus ref={inputRef} ></input>
                 </div>
-                <div>
-                    <label htmlFor="loginPassword">Password:</label>
-                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginPassword" type="password" name="pwd" value={props.currentUserData.pwd}></input>
+                <div className="flexColumnContainer">
+                    <label className="bold" htmlFor="loginPassword">Password:</label>
+                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginPassword" className="centeredContainerInput" type="password" name="pwd" value={props.currentUserData.pwd}></input>
                 </div>
                 {allowLogin()
-                    ? <input id="loginButton" className="button" onClick={login} type="button" value="Login"></input>
-                    : <input id="loginDisabled" className="button" type="button" value="Login"></input>
+                    ? <input id="loginButton" className="centeredContainerButton primaryButton buttonEnabled" onClick={login} type="button" value="Login"></input>
+                    : <input id="loginDisabled" className="centeredContainerButton primaryButtonDisabled" type="button" value="Login"></input>
                 }
-
-                <Link to="/register"><input id="registerButton" className="button" type="button" value="Register"></input></Link>
+                <div className="flexColumnContainer text-center">
+                    <Link to="/register"><input id="registerButton" className="centeredContainerButton tertiaryButton buttonEnabled" type="button" value="Register"></input></Link>
+                </div>
 
             </div>
 

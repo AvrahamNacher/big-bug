@@ -3,8 +3,8 @@
 /* Global Custom Properties */
 :root {
   --main-bg-color: rgb(241, 241, 241);
-  --main-accent-bg-color: rgb(45, 111, 211);
-  --main-accent-bg-color-hover: rgb(65, 125, 214);
+  --main-primary-bg-color: rgb(45, 111, 211);
+  --main-primary-bg-color-hover: rgb(65, 125, 214);
   --main-header-color: #4caf50;
   --main-light-text-color: #fff;
   --main-dark-text-color: rgb(48, 48, 48);
@@ -14,30 +14,25 @@
   --main-standard-text-padding: 10px;
 }
 
-.flex {
+/* .flex {
   display: flex;
   flex-wrap: wrap;
-}
+} */
 
-.flex-even {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.flex-right {
+/* .flex-right {
   display: flex;
   justify-content: flex-end;
-}
+} */
 
-.dividing_line_main {
+/* .dividing_line_main {
   border-bottom: 1px solid var(--main-dark-text-color);
   padding: 3px 0;
-}
+} */
 
-.dividing_line_secondary {
+/* .dividing_line_secondary {
   border-bottom: 1px dotted rgb(88, 88, 88);
   padding: 3px 0;
-}
+} */
 
 .error {
   color: var(--main-error-text-color);
@@ -47,12 +42,16 @@
   font-weight: 700;
 }
 
-.btn {
+.text-center {
+  text-align: center;
+}
+
+/* .btn {
   min-width: 15vw;
   max-width: 20vw;
   font-size: 1.4rem;
   padding: 5px;
-}
+} */
 
 * {
   margin: 0;
@@ -65,11 +64,135 @@ a {
   color: var(--main-dark-text-color);
 }
 
-/* For mobile phones: */
-
+/* Mobile first: */
 
 #app {
   height: 100vh;
   background-color: var(--main-bg-color);
   position: relative;
+}
+
+/* .mainWindow {  -- for computer screens
+  padding: 10vw;
+} */
+
+.centeredContainer {
+  border: 10px solid var(--main-header-color);
+  margin: 0 auto;
+  padding: 15px;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+.inputFieldPadding {
+  padding: 10px;
+}
+
+.narrowWindow {
+  width: 40vw;
+}
+
+.flexColumnContainer {
+  display: flex;
+  flex-direction: column;
+  /* background-color: yellow; */
+  flex: 1;
+}
+
+.flexRowContainer {
+  display: flex;
+  /* justify-content: center; */
+  flex-wrap: wrap;
+  /* background-color: yellowgreen; */
+  justify-content: space-between;
+
+  margin: 0;
+
+  /* width: 40vw; */
+  /* border: 10px solid var(--main-header-color); */
+  /* margin: 0 auto; */
+  /* padding: 15px; */
+}
+
+.flexRowContainer div {
+  /* margin: 5px; */
+}
+
+.centeredContainer div {
+  /* width: 20vw; */
+  margin-top: 10px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.centeredContainerInput {
+  width: initial;
+  max-width: initial;
+  /* width: 100vw;
+  max-width: 20vw; */
+  font-size: 1.4rem;
+  padding: 5px;
+  border-radius: 4px;
+  border: 0;
+  box-shadow: 1px 1px 3px #000000;
+}
+
+.centeredContainerButton {
+  width: initial;
+  max-width: initial;
+  /* width: 100vw;
+  max-width: 20vw; */
+  font-size: 1.4rem;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.buttonEnabled {
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: var(--main-light-text-color);
+  background-color: var(--main-primary-bg-color);
+  border: none;
+  margin-top: 25px;
+}
+
+.primaryButton:hover {
+  color: var(--main-highlight-text-color);
+  /* font-weight: 700; */
+}
+
+.primaryButtonDisabled {
+  opacity: .6;
+  color: var(--main-light-text-color);
+  background-color: var(--main-primary-bg-color);
+  border: none;
+  margin-top: 25px;
+}
+
+.tertiaryButton {
+  font-size: .9rem !important;
+  background-color: var(--main-background-bg-color);
+  border: none;
+  margin-top: 15px;
+}
+
+.tertiaryButton:hover {
+  font-weight: 700;
+}
+
+
+/* For computer screens: */
+@media only screen and (min-width: 600px) {
+
+  .mainWindow {
+    padding: 10vw;
+  }
+
 }
