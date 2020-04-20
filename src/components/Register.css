@@ -1,0 +1,29 @@
+.passwordEye {
+    margin-top: -25px;
+    margin-right: 10px;
+    align-self: flex-end;
+}
+
+.noPwdStrength {
+    border-bottom: 4px solid black;
+    width: 0%;
+    transition: color 1s, width 1s;
+}
+
+.lowPwdStrength {
+    border-bottom: 4px solid red;
+    width: 25%;
+    transition: color 1s, width 1s;
+}
+
+.mediumPwdStrength {
+    border-bottom: 4px solid blue;
+    width: 50%;
+    transition: color 1s, width 1s;
+}
+
+.strongPwdStrength {
+    border-bottom: 4px solid green;
+    width: 100%;
+    transition: color 1s, width 1s;
+}

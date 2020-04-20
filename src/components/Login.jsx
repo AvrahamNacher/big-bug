@@ -59,7 +59,7 @@ export default function Login(props) {
     return (
         <div className="mainWindow">
             <div className="centeredContainer narrowWindow">
-                {loginError && <div className="error bold-font">Incorrect login. Please check your details and try again.</div>}
+                {loginError && <div className="error-text bold">Incorrect login. Please check your details and try again.</div>}
                 <div className="flexColumnContainer">
                     <label className="bold" htmlFor="loginEmail">Email:</label>
                     <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginEmail" className="centeredContainerInput" type="text" name="email" value={props.currentUserData.email} autoFocus ref={inputRef} ></input>

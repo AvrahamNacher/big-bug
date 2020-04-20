@@ -1,3 +1,4 @@
+@import url('/font-awesome-4.6.3/css/font-awesome.min.css');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 
 /* Global Custom Properties */
@@ -34,12 +35,18 @@
   padding: 3px 0;
 } */
 
-.error {
+.error-text {
   color: var(--main-error-text-color);
 }
 
-.bold-font {
+
+
+.bold {
   font-weight: 700;
+}
+
+.margin-left-30 {
+  margin-left: 30px;
 }
 
 .text-center {
@@ -87,6 +94,11 @@ a {
   /* align-items: center; */
 }
 
+.redBorder {
+  border: 12px solid var(--main-header-color);
+
+}
+
 .inputFieldPadding {
   padding: 10px;
 }
@@ -126,10 +138,6 @@ a {
   margin-top: 10px;
 }
 
-.bold {
-  font-weight: 700;
-}
-
 .centeredContainerInput {
   width: initial;
   max-width: initial;
@@ -148,7 +156,7 @@ a {
   /* width: 100vw;
   max-width: 20vw; */
   font-size: 1.4rem;
-  padding: 5px;
+  padding: 6px 18px;
   border-radius: 4px;
 }
 
