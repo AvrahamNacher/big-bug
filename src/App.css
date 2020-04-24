@@ -103,8 +103,8 @@ a {
   padding: 10px;
 }
 
-.narrowWindow {
-  width: 40vw;
+.mainWindow {
+  padding: 10vw;
 }
 
 .flexColumnContainer {
@@ -199,8 +199,10 @@ a {
 /* For computer screens: */
 @media only screen and (min-width: 600px) {
 
-  .mainWindow {
-    padding: 10vw;
+
+
+  .narrowWindow {
+    width: 40vw;
   }
 
 }

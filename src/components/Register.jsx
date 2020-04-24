@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import * as dbUsers from '../backend/dbUserRequests.js';
 
 import './Register.css';
@@ -7,8 +7,9 @@ import './Register.css';
 export default function Register(props) {
     const [userData, setUserData] = useState({});
     const [errorMsgs, setErrorMsgs] = useState({});
-    const [showPwds, setShowPwds] = useState({pwd: false, pwdConfirm: false});
-    const [pwdStrength, setPwdStrength] = useState(0);
+    const [showPwds, setShowPwds] = useState({ pwd: false, pwdConfirm: false });
+    let history = useHistory();
+    // history.push("/");
 
     const isValidEmail = email => /^.+@.+\..+$/.test(email);
     // https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
@@ -52,103 +53,57 @@ export default function Register(props) {
     const checkPasswordQuality = () => true;
 
     const checkUserData = () => {
-        let newErrorMsgs = {firstName: '', lastName: '', pwd: '', pwdConfirm: ''};
+        let newErrorMsgs = { firstName: '', lastName: '', pwd: '', pwdConfirm: '' };
+        let validLoginData = true;
         if (!(userData.firstName && userData.firstName.length >= 2)) {
-            newErrorMsgs = ({...newErrorMsgs, firstName: "Name needs to be at least 2 characters."});
+            newErrorMsgs = ({ ...newErrorMsgs, firstName: "Name needs to be at least 2 characters." });
+            validLoginData = false;
         }
         if (!(userData.lastName && userData.lastName.length >= 2)) {
-            newErrorMsgs = ({...newErrorMsgs, lastName: "Name needs to be at least 2 characters."});
+            newErrorMsgs = ({ ...newErrorMsgs, lastName: "Name needs to be at least 2 characters." });
+            validLoginData = false;
         }
         if (!(userData.pwd && checkPasswordQuality())) {
-            newErrorMsgs = ({...newErrorMsgs, pwd: "pwd not strong enough"});
+            newErrorMsgs = ({ ...newErrorMsgs, pwd: "pwd not strong enough" });
+            validLoginData = false;
         }
         if (!(userData.pwdConfirm && (userData.pwd == userData.pwdConfirm))) {
-            newErrorMsgs = ({...newErrorMsgs, pwdConfirm: "pwd doesn't match"});
+            newErrorMsgs = ({ ...newErrorMsgs, pwdConfirm: "pwd doesn't match" });
+            validLoginData = false;
         }
-        setErrorMsgs(current => ({...current, ...newErrorMsgs}));
+        setErrorMsgs(current => ({ ...current, ...newErrorMsgs }));
+        return validLoginData;
     }
 
-    async function register() {
-        // console.log('checkEmail = ',await checkEmail());
-        // console.log('errorMsgs = ', errorMsgs);
-        // debugger;
-
-        if (checkEmail() && checkUserData()) {
+    async function register(e) {
+        e.preventDefault();
+        
+        if (await checkEmail() && checkUserData()) {
             let callBackResponse = data => {
-                console.log("Data received from CallBack = ", data);
+                // console.log("Data received from CallBack = ", data);
+                props.setIsAuthenticated(true);
+                props.setCurrentUserData(userData);
+                history.push("/");
             }
-            console.log("registering");
-            // dbUsers.register(userData, callBackResponse);
+            dbUsers.register(userData, callBackResponse);
         }
-
     }
 
-    // async function register() {
-    //     const { email } = userData;
-    //     // console.log("register request");
-    //     console.log(email);
-    //     console.log(errorMsgs);
-    //     if (userData.hasOwnProperty('email') && email.length !== 0) {
-    //         console.log("is email");
-    //         console.log("valid?", isValidEmail(email));
-    //         if (isValidEmail(email)) {
-    //             const isUnique = await dbUsers.checkUniqueEmailCB(email);
-    //             if (isUnique.length === 0) {
-    //                 console.log("is unique", isUnique);
-    //                 let callBackResponse = data => {
-    //                     console.log("Data received from CallBack = ", data);
-    //                 }
-    //                 // dbUsers.register(userData, callBackResponse);
-    //             } else {
-    //                 console.log("not unique", isUnique);
-    //                 setErrorMsgs(current => ({ ...errorMsgs, email: "This email address already is registered" }))
-    //             }
-    //         } else {
-    //             console.log("no email");
-    //             setErrorMsgs(current => ({ ...errorMsgs, email: "Not Valid Email" }))
-    //         }
-    //     } else {
-    //         console.log("no email");
-    //         setErrorMsgs(current => ({ ...errorMsgs, email: "No Email" }))
+    const toggleShowPwd = (target) => setShowPwds(current => ({ ...current, [target]: !current[target] }));
 
-    //     }
-
-    // }
-
-    const toggleShowPwd = ( target ) => setShowPwds( current => ({...current, [target]: !current[target]}));
-
-    const checkPwdStrength = () => 
-    !("pwd" in userData) ? "noPwdStrength"
-    : strongPasswordRegex.test(userData.pwd) ? "strongPwdStrength" 
-    : mediumPasswordRegex.test(userData.pwd) ? "mediumPwdStrength"
-    : lowPasswordRegex.test(userData.pwd) ? "lowPwdStrength"
-    : "noPwdStrength"
+    const checkPwdStrength = () =>
+        !("pwd" in userData) ? "noPwdStrength"
+            : strongPasswordRegex.test(userData.pwd) ? "strongPwdStrength"
+                : mediumPasswordRegex.test(userData.pwd) ? "mediumPwdStrength"
+                    : lowPasswordRegex.test(userData.pwd) ? "lowPwdStrength"
+                        : "noPwdStrength"
 
     const handleInput = e => {
         const { name, value } = e.target;
-        // console.log (`name ${name} value ${value}`);
-        // console.log(userData.pwd);
-        // debugger;
-        // if (strongPasswordRegex.test(userData.pwd)) {
-        //     setPwdStrength(3);
-        // } else if (mediumPasswordRegex.test(userData.pwd)) {
-        //     setPwdStrength(2);
-        // } else if (lowPasswordRegex.test(userData.pwd)) {
-        //     setPwdStrength(1);
-        // } else {
-        //     setPwdStrength(0);
-        // }
-        console.log ('pwdStrength = ', pwdStrength);
-
-
-        // if (lowPasswordRegex.test(userData.pwd)) { console.log('low pwd'); } else { console.log('not enough') }
-        // if (mediumPasswordRegex.test(userData.pwd)) { console.log('medium pwd'); } else { console.log('not enough') }
-        // if (strongPasswordRegex.test(userData.pwd)) { console.log('strong pwd'); } else { console.log('not enough') }
         setErrorMsgs(oldState => ({ ...oldState, [name]: '' }))
         setUserData(oldState => {
             return ({ ...oldState, [name]: value })
         })
-        // setUserData(oldState => ({ ...oldState, [name]: value }))
     }
 
     return (
@@ -179,18 +134,20 @@ export default function Register(props) {
                 <div className="flexRowContainer">
                     <div className="flexColumnContainer inputFieldPadding">
                         <label className="bold" htmlFor="password">Password:
-                        <span className={errorMsgs.pwd ? "error-text margin-left-30" : null}>{errorMsgs.pwd ? errorMsgs.pwd : null}</span>
+                            <span className={errorMsgs.pwd ? "error-text margin-left-30" : null}>{errorMsgs.pwd ? errorMsgs.pwd : null}</span>
+                            <span className="margin-left-30"></span>
+                            <span className={checkPwdStrength()}>{checkPwdStrength() === "lowPwdStrength" ? "(weak)" : checkPwdStrength() === "mediumPwdStrength" ? "(okay)" : checkPwdStrength() === "strongPwdStrength" ? "(strong)" : null}</span>
                         </label>
                         <input className="centeredContainerInput" onInput={handleInput} id="password" name="pwd" type={showPwds.pwd ? "text" : "password"}></input>
-                        <i className={showPwds.pwd ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye" } onClick={ ()=>toggleShowPwd("pwd")}></i>
-                        <div className={ checkPwdStrength() }></div>
+                        <i className={showPwds.pwd ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => toggleShowPwd("pwd")}></i>
+                        <div className={checkPwdStrength()}></div>
                     </div>
                     <div className="flexColumnContainer inputFieldPadding">
                         <label className="bold" htmlFor="pwdConfirm">Confirm Password:
                         <span className={errorMsgs.pwdConfirm ? "error-text margin-left-30" : null}>{errorMsgs.pwdConfirm ? errorMsgs.pwdConfirm : null}</span>
                         </label>
                         <input className="centeredContainerInput" onInput={handleInput} id="pwdConfirm" name="pwdConfirm" type={showPwds.pwdConfirm ? "text" : "password"}></input>
-                        <i className={showPwds.pwdConfirm ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye" } onClick={ ()=>toggleShowPwd("pwdConfirm")}></i>
+                        <i className={showPwds.pwdConfirm ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => toggleShowPwd("pwdConfirm")}></i>
                     </div>
                 </div>
                 <div className="flexColumnContainer inputFieldPadding">
@@ -199,7 +156,7 @@ export default function Register(props) {
                 </div>
                 <div className="flexRowContainer" style={{ justifyContent: 'center' }}>
                     <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link>
-                    <input className="centeredContainerButton primaryButton buttonEnabled" onClick={() => register()} type="button" value="Create Account"></input>
+                    <input className="centeredContainerButton primaryButton buttonEnabled" onClick={(e) => register(e)} type="button" value="Create Account"></input>
                 </div>
             </div>
 

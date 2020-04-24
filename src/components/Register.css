@@ -11,18 +11,21 @@
 }
 
 .lowPwdStrength {
+    color: red;
     border-bottom: 4px solid red;
     width: 25%;
     transition: color 1s, width 1s;
 }
 
 .mediumPwdStrength {
-    border-bottom: 4px solid blue;
+    color: #237bff;
+    border-bottom: 4px solid #237bff;;
     width: 50%;
     transition: color 1s, width 1s;
 }
 
 .strongPwdStrength {
+    color: green;
     border-bottom: 4px solid green;
     width: 100%;
     transition: color 1s, width 1s;

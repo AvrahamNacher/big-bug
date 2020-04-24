@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Redirect
@@ -76,12 +76,12 @@ function App() {
   return (
     <div id="app">
       <Router>
-      <Header 
-        isAuthenticated={isAuthenticated} 
-        logout={ () => logout() }
-        setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
-        currentUserData={currentUserData} 
-      />
+        <Header 
+          isAuthenticated={isAuthenticated} 
+          logout={ () => logout() }
+          setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
+          currentUserData={currentUserData} 
+        />
         <Switch>
           <Route exact path={["/"]}>
             { isAuthenticated
@@ -99,7 +99,7 @@ function App() {
 
           </Route>
           <Route path="/register">
-            <Register />
+            <Register setCurrentUserData={ newData => {setCurrentUserData(newData)}} setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
           </Route>
           <Route path="/createBug">
             <CreateBug 
