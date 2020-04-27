@@ -195,6 +195,12 @@ a {
   font-weight: 700;
 }
 
+.passwordEye {
+  margin-top: -25px;
+  margin-right: 10px;
+  align-self: flex-end;
+}
+
 
 /* For computer screens: */
 @media only screen and (min-width: 600px) {
@@ -202,7 +208,7 @@ a {
 
 
   .narrowWindow {
-    width: 40vw;
+    width: 30vw;
   }
 
 }

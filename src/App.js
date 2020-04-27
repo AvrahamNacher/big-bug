@@ -12,12 +12,13 @@ import {
 } from "react-router-dom";
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import BugListView from './components/BugListView';
+// import BugListView from './components/BugListView';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
+import Settings from './components/Settings';
 import * as dbBugs from '../src/backend/dbBugRequests';
 
 import './App.css';
@@ -94,12 +95,12 @@ function App() {
                 bugSeverityLevels={bugSeverityLevels}
                 bugStatusStages={bugStatusStages}
                 />
-            : <Login currentUserData={currentUserData} setCurrentUserData={ newData => {setCurrentUserData(newData)}} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
+            : <Login currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
 
           </Route>
           <Route path="/register">
-            <Register setCurrentUserData={ newData => {setCurrentUserData(newData)}} setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
+            <Register setCurrentUserData={ newData => setCurrentUserData(newData)} setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
           </Route>
           <Route path="/createBug">
             <CreateBug 
@@ -116,6 +117,9 @@ function App() {
               bugSeverityLevels={bugSeverityLevels} 
               bugStatusStages={bugStatusStages}
             />
+          </Route>
+          <Route path="/settings">
+            <Settings currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} />
           </Route>
           <Redirect to="/" />
         </Switch>

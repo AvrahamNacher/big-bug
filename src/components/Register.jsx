@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import UserDataField from './UserDataField';
+import UserPwdField from './UserPwdField';
 import * as dbUsers from '../backend/dbUserRequests.js';
 
 import './Register.css';
@@ -77,8 +79,8 @@ export default function Register(props) {
 
     async function register(e) {
         e.preventDefault();
-        
-        if (await checkEmail() && checkUserData()) {
+        let hasAllUserData = checkUserData();
+        if (await checkEmail() && hasAllUserData) {
             let callBackResponse = data => {
                 // console.log("Data received from CallBack = ", data);
                 props.setIsAuthenticated(true);
@@ -108,52 +110,19 @@ export default function Register(props) {
 
     return (
         <div className="mainWindow">
-
             <div className="centeredContainer" style={{ width: 'inherit' }}>
                 <div className="bold"><h1>Registration Information</h1></div>
                 <div className="flexRowContainer">
-                    <div className="flexColumnContainer inputFieldPadding">
-                        <label className="bold" htmlFor="firstName">First Name:
-                            <span className={errorMsgs.firstName ? "error-text margin-left-30" : null}>{errorMsgs.firstName ? errorMsgs.firstName : null}</span>
-                        </label>
-                        <input className="centeredContainerInput" onInput={handleInput} id="firstName" name="firstName" type="text" autoFocus></input>
-                    </div>
-                    <div className="flexColumnContainer inputFieldPadding">
-                        <label className="bold" htmlFor="lastName">Last Name:
-                            <span className={errorMsgs.lastName ? "error-text margin-left-30" : null}>{errorMsgs.lastName ? errorMsgs.lastName : null}</span>
-                        </label>
-                        <input className="centeredContainerInput" onInput={handleInput} id="lastName" name="lastName" type="text"></input>
-                    </div>
+                    <UserDataField name={"firstName"} errorMsgs={errorMsgs} handleInput={handleInput} hasAutoFocus={true}>First Name</UserDataField>
+                    <UserDataField name={"lastName"} errorMsgs={errorMsgs} handleInput={handleInput}>Last Name</UserDataField>
                 </div>
-                <div className="flexColumnContainer inputFieldPadding">
-                    <label className="bold" htmlFor="email">Email:
-                        {errorMsgs.email ? <span className="error-text margin-left-30">{errorMsgs.email} <i className="fas fa-exclamation-triangle error-text"></i></span> : null}
-                    </label>
-                    <input className="centeredContainerInput" onInput={handleInput} id="email" name="email" type="email"></input>
-                </div>
+                <UserDataField name={"email"} errorMsgs={errorMsgs} handleInput={handleInput}>Email</UserDataField>
+
                 <div className="flexRowContainer">
-                    <div className="flexColumnContainer inputFieldPadding">
-                        <label className="bold" htmlFor="password">Password:
-                            <span className={errorMsgs.pwd ? "error-text margin-left-30" : null}>{errorMsgs.pwd ? errorMsgs.pwd : null}</span>
-                            <span className="margin-left-30"></span>
-                            <span className={checkPwdStrength()}>{checkPwdStrength() === "lowPwdStrength" ? "(weak)" : checkPwdStrength() === "mediumPwdStrength" ? "(okay)" : checkPwdStrength() === "strongPwdStrength" ? "(strong)" : null}</span>
-                        </label>
-                        <input className="centeredContainerInput" onInput={handleInput} id="password" name="pwd" type={showPwds.pwd ? "text" : "password"}></input>
-                        <i className={showPwds.pwd ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => toggleShowPwd("pwd")}></i>
-                        <div className={checkPwdStrength()}></div>
-                    </div>
-                    <div className="flexColumnContainer inputFieldPadding">
-                        <label className="bold" htmlFor="pwdConfirm">Confirm Password:
-                        <span className={errorMsgs.pwdConfirm ? "error-text margin-left-30" : null}>{errorMsgs.pwdConfirm ? errorMsgs.pwdConfirm : null}</span>
-                        </label>
-                        <input className="centeredContainerInput" onInput={handleInput} id="pwdConfirm" name="pwdConfirm" type={showPwds.pwdConfirm ? "text" : "password"}></input>
-                        <i className={showPwds.pwdConfirm ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => toggleShowPwd("pwdConfirm")}></i>
-                    </div>
+                    <UserPwdField name={"pwd"} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
+                    <UserPwdField name={"pwdConfirm"} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={false} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Password</UserPwdField>
                 </div>
-                <div className="flexColumnContainer inputFieldPadding">
-                    <label className="bold" htmlFor="phone">Phone:</label>
-                    <input className="centeredContainerInput" onInput={handleInput} id="phone" name="phone" type="text"></input>
-                </div>
+                <UserDataField name={"phone"} errorMsgs={errorMsgs} handleInput={handleInput}>Phone</UserDataField>
                 <div className="flexRowContainer" style={{ justifyContent: 'center' }}>
                     <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link>
                     <input className="centeredContainerButton primaryButton buttonEnabled" onClick={(e) => register(e)} type="button" value="Create Account"></input>

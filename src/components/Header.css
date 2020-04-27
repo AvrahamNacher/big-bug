@@ -40,5 +40,6 @@ header .menuHamberger {
 
 .headerItem:hover {
     /* background-color: var(--main-accent-bg-color-hover); */
+    color: var(--main-highlight-text-color);
     cursor: pointer;
 }
