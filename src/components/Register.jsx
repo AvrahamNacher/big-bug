@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Link, Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import UserDataField from './UserDataField';
 import UserPwdField from './UserPwdField';
 import * as dbUsers from '../backend/dbUserRequests.js';
@@ -7,11 +7,12 @@ import * as dbUsers from '../backend/dbUserRequests.js';
 import './Register.css';
 
 export default function Register(props) {
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(props.currentUserData);
+    const { email, pwd, firstName, lastName, phone, landingPage } = userData;  // destructuring
     const [errorMsgs, setErrorMsgs] = useState({});
-    const [showPwds, setShowPwds] = useState({ pwd: false, pwdConfirm: false });
+    const [showPwds, setShowPwds] = useState({});
     let history = useHistory();
-    // history.push("/");
+    let isRegisterPage = history.location.pathname === '/register' ? true : false;
 
     const isValidEmail = email => /^.+@.+\..+$/.test(email);
     // https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
@@ -52,26 +53,32 @@ export default function Register(props) {
         return false;
     }
 
-    const checkPasswordQuality = () => true;
+    async function isPwdCorrect() {
+        const { email, pwd } = userData;
+        return true; // TODO check pwd is correct for this email
+    }
 
-    const checkUserData = () => {
-        let newErrorMsgs = { firstName: '', lastName: '', pwd: '', pwdConfirm: '' };
+    const checkPasswordQuality = (sourcePwdField) => userData[sourcePwdField] && userData[sourcePwdField].length > 2;
+
+    const checkUserData = (sourcePwdField) => {
+        let newErrorMsgs = { firstName: '', lastName: '', [sourcePwdField]: '', pwdConfirm: '' };
         let validLoginData = true;
-        if (!(userData.firstName && userData.firstName.length >= 2)) {
+        if (!(firstName && firstName.length >= 2)) {
             newErrorMsgs = ({ ...newErrorMsgs, firstName: "Name needs to be at least 2 characters." });
             validLoginData = false;
         }
-        if (!(userData.lastName && userData.lastName.length >= 2)) {
+        if (!(lastName && lastName.length >= 2)) {
             newErrorMsgs = ({ ...newErrorMsgs, lastName: "Name needs to be at least 2 characters." });
             validLoginData = false;
         }
-        if (!(userData.pwd && checkPasswordQuality())) {
-            newErrorMsgs = ({ ...newErrorMsgs, pwd: "pwd not strong enough" });
-            validLoginData = false;
-        }
-        if (!(userData.pwdConfirm && (userData.pwd == userData.pwdConfirm))) {
-            newErrorMsgs = ({ ...newErrorMsgs, pwdConfirm: "pwd doesn't match" });
-            validLoginData = false;
+        if (sourcePwdField === 'pwd' || userData[sourcePwdField] && userData[sourcePwdField].length !== 0) {
+            if (!checkPasswordQuality(sourcePwdField)) {
+                newErrorMsgs = ({ ...newErrorMsgs, [sourcePwdField]: "pwd not strong enough" });
+                validLoginData = false;
+            } else if (!(userData.pwdConfirm && (userData[sourcePwdField] == userData.pwdConfirm))) {
+                newErrorMsgs = ({ ...newErrorMsgs, pwdConfirm: "pwd doesn't match" });
+                validLoginData = false;
+            }
         }
         setErrorMsgs(current => ({ ...current, ...newErrorMsgs }));
         return validLoginData;
@@ -79,7 +86,7 @@ export default function Register(props) {
 
     async function register(e) {
         e.preventDefault();
-        let hasAllUserData = checkUserData();
+        let hasAllUserData = checkUserData("pwd");
         if (await checkEmail() && hasAllUserData) {
             let callBackResponse = data => {
                 // console.log("Data received from CallBack = ", data);
@@ -91,13 +98,28 @@ export default function Register(props) {
         }
     }
 
+    async function update(e) {
+        e.preventDefault();
+        let hasAllUserData = checkUserData("newPwd");
+        if (await isPwdCorrect() && hasAllUserData) {
+            let callBackResponse = data => {
+                // console.log("Data received from CallBack = ", data);
+                props.setCurrentUserData(userData);
+                history.push("/");
+            }
+            console.log("Will update settings");
+            // dbUsers.register(userData, callBackResponse);
+            // TODO update user data
+        }
+    }
+
     const toggleShowPwd = (target) => setShowPwds(current => ({ ...current, [target]: !current[target] }));
 
-    const checkPwdStrength = () =>
-        !("pwd" in userData) ? "noPwdStrength"
-            : strongPasswordRegex.test(userData.pwd) ? "strongPwdStrength"
-                : mediumPasswordRegex.test(userData.pwd) ? "mediumPwdStrength"
-                    : lowPasswordRegex.test(userData.pwd) ? "lowPwdStrength"
+    const checkPwdStrength = (field) =>
+        !(field in userData) ? "noPwdStrength"
+            : strongPasswordRegex.test(userData[field]) ? "strongPwdStrength"
+                : mediumPasswordRegex.test(userData[field]) ? "mediumPwdStrength"
+                    : lowPasswordRegex.test(userData[field]) ? "lowPwdStrength"
                         : "noPwdStrength"
 
     const handleInput = e => {
@@ -111,21 +133,33 @@ export default function Register(props) {
     return (
         <div className="mainWindow">
             <div className="centeredContainer" style={{ width: 'inherit' }}>
-                <div className="bold"><h1>Registration Information</h1></div>
+                <div className="bold"><h1>{isRegisterPage ? "Registration Information:" : "Update Your Settings:"}</h1></div>
                 <div className="flexRowContainer">
-                    <UserDataField name={"firstName"} errorMsgs={errorMsgs} handleInput={handleInput} hasAutoFocus={true}>First Name</UserDataField>
-                    <UserDataField name={"lastName"} errorMsgs={errorMsgs} handleInput={handleInput}>Last Name</UserDataField>
+                    <UserDataField field={"firstName"} value={firstName} errorMsgs={errorMsgs} handleInput={handleInput} hasAutoFocus={true}>First Name</UserDataField>
+                    <UserDataField field={"lastName"} value={lastName} errorMsgs={errorMsgs} handleInput={handleInput}>Last Name</UserDataField>
                 </div>
-                <UserDataField name={"email"} errorMsgs={errorMsgs} handleInput={handleInput}>Email</UserDataField>
+                {isRegisterPage
+                    ? <UserDataField field={"email"} value={email} errorMsgs={errorMsgs} handleInput={handleInput}>Email</UserDataField>
+                    : <UserDataField field={"email"} value={email} isDisabled={true} handleInput={handleInput}>Email</UserDataField>
+
+                }
+
 
                 <div className="flexRowContainer">
-                    <UserPwdField name={"pwd"} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
-                    <UserPwdField name={"pwdConfirm"} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={false} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Password</UserPwdField>
+                    {isRegisterPage
+                        ? <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
+                        :
+                        <>
+                            <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Old Password</UserPwdField>
+                            <UserPwdField field={"newPwd"} value={userData.newPwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>New Password</UserPwdField>
+                        </>
+                    }
+                    <UserPwdField field={"pwdConfirm"} value={userData.pwdConfirm} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={false} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Password</UserPwdField>
                 </div>
-                <UserDataField name={"phone"} errorMsgs={errorMsgs} handleInput={handleInput}>Phone</UserDataField>
+                <UserDataField field={"phone"} value={phone} errorMsgs={errorMsgs} handleInput={handleInput}>Phone</UserDataField>
                 <div className="flexRowContainer" style={{ justifyContent: 'center' }}>
                     <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link>
-                    <input className="centeredContainerButton primaryButton buttonEnabled" onClick={(e) => register(e)} type="button" value="Create Account"></input>
+                    <input className="centeredContainerButton primaryButton buttonEnabled" onClick={isRegisterPage ? (e) => register(e) : (e) => update(e)} type="button" value={isRegisterPage ? "Create Account" : "Update Settings"}></input>
                 </div>
             </div>
 

@@ -18,7 +18,6 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
-import Settings from './components/Settings';
 import * as dbBugs from '../src/backend/dbBugRequests';
 
 import './App.css';
@@ -26,7 +25,7 @@ import './App.css';
 function App() {
   
   const [loading, setLoading] = useState(true);  // TODO
-  const [currentUserData, setCurrentUserData] = useState({ email: "", pwd: "" });
+  const [currentUserData, setCurrentUserData] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
@@ -66,6 +65,7 @@ function App() {
 
     console.log("App: logging out");
     setIsAuthenticated(false);
+    setCurrentUserData({});
     localStorage.setItem('userInfo', {'firstName': 'default', 'lastName': 'user'});
   }
 
@@ -81,7 +81,7 @@ function App() {
           isAuthenticated={isAuthenticated} 
           logout={ () => logout() }
           setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
-          currentUserData={currentUserData} 
+          currentUserData={currentUserData}
         />
         <Switch>
           <Route exact path={["/"]}>
@@ -95,13 +95,22 @@ function App() {
                 bugSeverityLevels={bugSeverityLevels}
                 bugStatusStages={bugStatusStages}
                 />
-            : <Login currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
+            : <Login 
+                currentUserData={currentUserData} 
+                setCurrentUserData={ newData => setCurrentUserData(newData)} 
+                setIsAuthenticated={ newState => setIsAuthenticated(newState)} />
             }
 
           </Route>
-          <Route path="/register">
-            <Register setCurrentUserData={ newData => setCurrentUserData(newData)} setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
+          <Route path={["/register", "/settings"]}>
+            <Register 
+              currentUserData={currentUserData} 
+              setCurrentUserData={ newData => setCurrentUserData(newData)} 
+              setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
           </Route>
+          {/* <Route path="/settings">
+            <Settings currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} />
+          </Route> */}
           <Route path="/createBug">
             <CreateBug 
               // currentUser={}
@@ -117,9 +126,6 @@ function App() {
               bugSeverityLevels={bugSeverityLevels} 
               bugStatusStages={bugStatusStages}
             />
-          </Route>
-          <Route path="/settings">
-            <Settings currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} />
           </Route>
           <Redirect to="/" />
         </Switch>

@@ -26,7 +26,10 @@ export default function Login(props) {
     const toggleShowPwd = () => setShowPwd(current => !current);
 
     function allowLogin() {
-        return props.currentUserData.email.length > 0 && props.currentUserData.pwd.length > 0;
+        return props.currentUserData.email && 
+            props.currentUserData.email.length > 0 && 
+            props.currentUserData.pwd && 
+            props.currentUserData.pwd.length > 0;
     }
 
     function login() {
@@ -66,11 +69,11 @@ export default function Login(props) {
                 {loginError && <div className="error-text bold">Incorrect login. Please check your details and try again.</div>}
                 <div className="flexColumnContainer">
                     <label className="bold" htmlFor="loginEmail">Email:</label>
-                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginEmail" className="centeredContainerInput" type="text" name="email" value={props.currentUserData.email} autoFocus ref={inputRef} ></input>
+                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginEmail" className="centeredContainerInput" type="text" name="email" value={props.currentUserData.email || ''} autoFocus ref={inputRef} ></input>
                 </div>
                 <div className="flexColumnContainer">
                     <label className="bold" htmlFor="loginPassword">Password:</label>
-                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginPassword" className="centeredContainerInput" type={showPwd ? "text" : "password"} name="pwd" value={props.currentUserData.pwd}></input>
+                    <input onChange={e => handleInput(e.target)} onKeyPress={e => handleKeypress(e)} id="loginPassword" className="centeredContainerInput" type={showPwd ? "text" : "password"} name="pwd" value={props.currentUserData.pwd || ''}></input>
                     <i className={showPwd ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => toggleShowPwd()}></i>
 
                 </div>
