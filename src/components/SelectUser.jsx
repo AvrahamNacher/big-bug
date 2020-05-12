@@ -7,7 +7,7 @@ export default function SelectUser(props) {
     // console.log ("SelectUser user = " + props.user);
 
     const showList = () => {
-        return props.userList.map (el => <option key={el.id} value={el.id}>{el.firstName} {el.lastName}</option>)
+        return props.userList.map(el => <option key={el.id} value={el.id}>{el.firstName} {el.lastName}</option>)
     }
 
     const handleChange = e => {
@@ -15,8 +15,12 @@ export default function SelectUser(props) {
     }
 
     return (
-        <select value={props.user} onChange={handleChange}>
-            {showList()}
-        </select>
+        <div className="flexColumnContainer inputFieldPadding">
+            <label className="bold" htmlFor="userDataField">{props.children}:</label>
+            <select className="centeredContainerInput inputFieldPadding" value={props.user} onChange={handleChange}>
+                {showList()}
+            </select>
+
+        </div>
     )
 }

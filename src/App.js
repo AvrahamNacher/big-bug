@@ -26,11 +26,12 @@ function App() {
   
   const [loading, setLoading] = useState(true);  // TODO
   const [currentUserData, setCurrentUserData] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
   const [bugSeverityLevels, setBugSeverityLevels] = useState([]);
   const [bugStatusStages, setBugStatusStages] = useState([]);
+  const [bugReproducibilityOptions, setBugReproducibilityOptions] = useState([]);
   
   // debugger;
 
@@ -55,6 +56,12 @@ function App() {
   if (bugStatusStages.length === 0) {
     dbBugs.getBugStatusStages(async (stages) => {
       setBugStatusStages(stages);
+    });
+  }
+
+  if (bugReproducibilityOptions.length === 0) {
+    dbBugs.getBugReproducibilityOptions(async (options) => {
+      setBugReproducibilityOptions(options); console.log("repro options")
     });
   }
 
@@ -94,6 +101,7 @@ function App() {
                 setUserList={ users => setUserList(users)}
                 bugSeverityLevels={bugSeverityLevels}
                 bugStatusStages={bugStatusStages}
+                bugReproducibilityOptions={bugReproducibilityOptions}
                 />
             : <Login 
                 currentUserData={currentUserData} 
@@ -117,6 +125,7 @@ function App() {
               userList={userList} 
               bugSeverityLevels={bugSeverityLevels} 
               bugStatusStages={bugStatusStages}
+              bugReproducibilityOptions={bugReproducibilityOptions}
             />
           </Route>
           <Route path="/bug/:id">
@@ -125,6 +134,7 @@ function App() {
               userList={userList} 
               bugSeverityLevels={bugSeverityLevels} 
               bugStatusStages={bugStatusStages}
+              bugReproducibilityOptions={bugReproducibilityOptions}
             />
           </Route>
           <Redirect to="/" />

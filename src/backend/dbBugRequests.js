@@ -13,7 +13,7 @@ function submitBug(data, cb) {
     bugDueDate,
     bugStatus,
     bugSeverity,
-    bugReproducableFrequency
+    bugReproducibility
   } = data;
 
   request({
@@ -28,7 +28,7 @@ function submitBug(data, cb) {
       "bugDueDate": bugDueDate,
       "bugStatus": bugStatus,
       "bugSeverity": bugSeverity,
-      "bugReproducableFrequency": bugReproducableFrequency
+      "bugReproducibility": bugReproducibility
     }
   }, function (err, httpResponse, body) {
     let result = JSON.parse(body).affectedRows;
@@ -73,7 +73,6 @@ function getBug(id, cb) {
 
 function updateBug(bug, cb) {
   var request = require('request');
-
   request({
     method: 'POST',
     url: 'https://bigbug-365ff5.appdrag.site/api/bugs/updateBug',
@@ -87,10 +86,10 @@ function updateBug(bug, cb) {
       "bugDueDate": bug.bugDueDate,
       "bugStatus": bug.bugStatus,
       "bugSeverity": bug.bugSeverity,
-      "bugReproducableFrequency": bug.bugReproducableFrequency
+      "bugReproducibility": bug.bugReproducibility
     }
   }, function (err, httpResponse, body) {
-    console.log(body);
+    console.log("update request", body);
     let response = JSON.parse(body);
     cb(response.affectedRows);
   });
@@ -144,6 +143,22 @@ function getBugStatusStages(cb) {
   });
 }
 
+function getBugReproducibilityOptions(cb) {
+  var request = require('request');
+
+  request({
+    method: 'POST',
+    url: 'https://bigbug-365ff5.appdrag.site/api/bugs/getBugReproducibilityOptions',
+    form: {
+      "AD_PageNbr": "1",
+      "AD_PageSize": "500"
+    }
+  }, function (err, httpResponse, body) {
+    const response = JSON.parse(body);
+    cb(response.Table);
+  });
+}
+
 export {
   submitBug,
   getAllBugs,
@@ -151,5 +166,6 @@ export {
   updateBug,
   deleteBugs,
   getBugSeverityLevels,
-  getBugStatusStages
+  getBugStatusStages,
+  getBugReproducibilityOptions
 };

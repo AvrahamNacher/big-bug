@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SelectUser from './SelectUser';
 import SelectBugSeverityLevel from './SelectBugSeverityLevel';
+import SelectBugReproducibility from './SelectBugReproducibility';
 import SelectBugStatus from './SelectBugStatus';
+import UserDataField from './UserDataField';
 import * as dbBugs from '../backend/dbBugRequests';
 
 export default function EditBug(props) {
@@ -18,13 +20,14 @@ export default function EditBug(props) {
                 bugDueDate: "",
                 bugStatus: "",
                 bugSeverity: "",
-                bugReproducableFrequency: ""
+                bugReproducibity: ""
             }
         );
     }
 
     const [submitMessage, setSubmitMessage] = useState({ message: "Edit Bug Details", messageType: "success", show: true });
     const [newBug, setNewBug] = useState(resetBugFields());
+    const { bugTitle, bugDescription, bugCreatedDate, bugCreatedBy, bugAssignedTo, bugDueDate, bugStatus, bugSeverity, bugReproducibility } = newBug; // destructuring
 
     let { id } = useParams();
 
@@ -41,7 +44,7 @@ export default function EditBug(props) {
             bugDueDate: bugDueDate,
             bugStatus: response.bugStatus,
             bugSeverity: response.bugSeverity,
-            bugReproducableFrequency: response.bugReproducableFrequency
+            bugReproducibility: response.bugReproducibility
         });
     }
     if (newBug.id === '') { dbBugs.getBug(id, callback); }
@@ -74,48 +77,54 @@ export default function EditBug(props) {
 
     return (
         <div>
-            <div id="CreateBugForm">
+            <div id="mainWindow" style={{ padding: '30px' }}>
                 {submitMessage.show && <h1>{submitMessage.message}</h1>}
                 <form onSubmit={updateBug}>
-                    <div>
-                        <label htmlFor="bugTitle">Title:</label>
-                        <input onChange={handleInput} type="text" id="bugTitle" name="bugTitle" value={newBug.bugTitle}></input>
+                    <UserDataField field={"bugTitle"} value={bugTitle} handleInput={handleInput} hasAutoFocus={true}>Title</UserDataField>
+                    {/* <UserDataField field={"bugDescription"} value={bugDescription} handleInput={handleInput} hasAutoFocus={true}>Description</UserDataField> */}
+
+                    <div className="flexColumnContainer inputFieldPadding">
+                        <label className="bold" htmlFor="bugDescription">Description:</label>
+                        <textarea rows="4" className="centeredContainerInput" onChange={handleInput} id="bugDescription" name="bugDescription" value={bugDescription}></textarea>
                     </div>
-                    <div>
+
+                    {/* <div>
                         <div><label htmlFor="bugDescription">Description:</label></div>
-                        <textarea onChange={handleInput} id="bugDescription" name="bugDescription" value={newBug.bugDescription}></textarea>
-                    </div>
-                    <div className="flex">
-                        <div>
-                            <label htmlFor="bugCreatedDate">Creation Date:</label>
-                            <input onChange={handleInput} type="date" id="bugCreatedDate" name="bugCreatedDate" value={newBug.bugCreatedDate}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="bugCreatedBy">Created By:</label>
-                            <SelectUser user={newBug.bugCreatedBy} userList={props.userList} onChange={ user => setNewBug({...newBug, bugCreatedBy: user})} />
-                        </div>
-                        <div>
-                            <label htmlFor="bugAssignedTo">Assigned To:</label>
-                            <SelectUser user={newBug.bugAssignedTo} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })} />
-                        </div>
-                        <div>
-                            <label htmlFor="bugDueDate">Due Date:</label>
-                            <input onChange={handleInput} type="date" id="bugDueDate" name="bugDueDate" value={newBug.bugDueDate}></input>
+                        <textarea onChange={handleInput} id="bugDescription" name="bugDescription" value={bugDescription}></textarea>
+                    </div> */}
+                    <div className="flexRowContainer">
+                        <UserDataField field={"bugCreatedDate"} value={bugCreatedDate} handleInput={handleInput} hasAutoFocus={true}>Creation Date</UserDataField>
+
+                        <SelectUser user={bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
+                        <SelectUser user={bugAssignedTo} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })}>Assigned To</SelectUser>
+
+                        <div className="flexColumnContainer inputFieldPadding">
+                            <label className="bold" htmlFor="bugDueDate">Due Date:</label>
+                            <input className="centeredContainerInput" onChange={handleInput} type="date" id="bugDueDate" name="bugDueDate" value={bugDueDate}></input>
                         </div>
                     </div>
-                    <SelectBugStatus bugStatusStages={props.bugStatusStages} bugStatus={newBug.bugStatus} onChange={ newStatus => setNewBug({...newBug, bugStatus: newStatus})} />
-                    <SelectBugSeverityLevel onChange={bugLevel => setNewBug({...newBug, bugSeverity: bugLevel})} bugSeverityLevels={props.bugSeverityLevels} bugSeverity={newBug.bugSeverity}/>
-                    <label htmlFor="bugReproducibleFrequency">Reproducible Frequency:</label>
-                    <input onChange={handleInput} type="text" id="bugReproducibleFrequency" name="bugReproducableFrequency" value={newBug.bugReproducableFrequency}></input>
+                    <div className="flexRowContainer">
+                        <SelectBugStatus bugStatusStages={props.bugStatusStages} bugStatus={bugStatus} onChange={newStatus => setNewBug({ ...newBug, bugStatus: newStatus })} />
+                        <SelectBugSeverityLevel onChange={bugLevel => setNewBug({ ...newBug, bugSeverity: bugLevel })} bugSeverityLevels={props.bugSeverityLevels} bugSeverity={bugSeverity}>Bug Severity</SelectBugSeverityLevel>
+                        <SelectBugReproducibility onChange={bugLevel => {
+                            console.log("buglevel = ", bugLevel);
+                            setNewBug({ ...newBug, bugReproducibility: bugLevel });
+                        }} bugReproducibilityOptions={props.bugReproducibilityOptions} bugReproducibility={bugReproducibility}>Bug Reproducibility</SelectBugReproducibility>
+                        {/* <label htmlFor="bugReproducibleFrequency">Reproducible Frequency:</label>
+                        <input onChange={handleInput} type="text" id="bugReproducibleFrequency" name="bugReproducableFrequency" value={bugReproducableFrequency}></input> */}
+                    </div>
+
+                    <div className="dividing-line-main" style={{ marginTop: '10px' }}></div>
+
                     <div className="flex-right">
                         <Link to="/">
-                            <input className="btn" type="button" value="Cancel" />
+                            <input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '100px' }} type="button" value="Cancel" />
                         </Link>
                         <Link to="/">
-                            <input onClick={deleteBug} className="btn" type="button" value="Delete" />
+                            <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Delete" />
                         </Link>
                         <Link to="/">
-                            <input onClick={updateBug} className="btn" type="button" value="Update Bug"></input>
+                            <input onClick={updateBug} className="centeredContainerButton primaryButton buttonEnabled" type="button" value="Update Bug"></input>
                         </Link>
                     </div>
                 </form>

@@ -55,12 +55,13 @@ export default function BugListView(props) {
                 bugDueDate,
                 bugStatus,
                 bugSeverity,
-                bugReproducableFrequency,
+                bugReproducibility,
             } = bug; //destructuring
 
             let bugAssignedToName = props.userList.filter(user => user.id === parseInt(bugAssignedTo));
             let bugStatusName;
             let bugSeverityName;
+            let bugReproducibilityOptionName;
             if (bugAssignedToName.length !== 0) {
                 bugAssignedToName = (bugAssignedToName[0].firstName + " " + bugAssignedToName[0].lastName);
             }
@@ -71,6 +72,10 @@ export default function BugListView(props) {
 
             if (props.bugSeverityLevels.length !== 0 && bugSeverity) {
                 bugSeverityName = props.bugSeverityLevels[parseInt(bugSeverity) - 1].SeverityLevel;
+            }
+
+            if (props.bugReproducibilityOptions.length !== 0 && bugReproducibility) {
+                bugReproducibilityOptionName = props.bugReproducibilityOptions[parseInt(bugReproducibility)-1].bugReproducibility;
             }
 
             return (
@@ -90,7 +95,7 @@ export default function BugListView(props) {
                     </Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_status"><Link to={`/bug/${id}`}>{bugStatusName}</Link></td>
                     <td className="bug_list_view_item bug_list_view_bug_severity"><Link to={`/bug/${id}`}>{bugSeverityName}</Link></td>
-                    <td className="bug_list_view_item bug_list_view_bug_reproducibleFrequency"><Link to={`/bug/${id}`}>{bugReproducableFrequency}</Link></td>
+                    <td className="bug_list_view_item bug_list_view_bug_reproducibleFrequency"><Link to={`/bug/${id}`}>{bugReproducibilityOptionName}</Link></td>
                 </tr>
             )
         }

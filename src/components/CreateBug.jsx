@@ -20,7 +20,7 @@ export default function CreateBug(props) {
                 bugDueDate: "",
                 bugStatus: "1",
                 bugSeverity: "1",
-                bugReproducableFrequency: ""
+                bugReproducibility: "1"
             }
         );
     }
@@ -89,8 +89,8 @@ export default function CreateBug(props) {
                 {/* <label htmlFor="bugSeverity">Severity:</label> */}
                 {/* <input onChange={handleInput} type="text" id="bugSeverity" name="bugSeverity" value={newBug.bugSeverity}></input> */}
                 <SelectBugSeverityLevel onChange={bugLevel => setNewBug({...newBug, bugSeverity: bugLevel})} bugSeverityLevels={props.bugSeverityLevels} bugSeverity={newBug.bugSeverity}/>
-                <label htmlFor="bugReproducibleFrequency">Reproducible Frequency:</label>
-                <input onChange={handleInput} type="text" id="bugReproducibleFrequency" name="bugReproducibleFrequency" value={newBug.bugReproducableFrequency}></input>
+                <label htmlFor="bugReproducibility">Reproducible Frequency:</label>
+                <input onChange={handleInput} type="text" id="bugReproducibility" name="bugReproducibility" value={newBug.bugReproducibility}></input>
                 <div className="flex-right">
                     <Link to="/">
                         <input className="btn" type="button" value="Cancel" />

@@ -11,8 +11,9 @@ export default function Register(props) {
     const { email, pwd, firstName, lastName, phone, landingPage } = userData;  // destructuring
     const [errorMsgs, setErrorMsgs] = useState({});
     const [showPwds, setShowPwds] = useState({});
-    let history = useHistory();
-    let isRegisterPage = history.location.pathname === '/register' ? true : false;
+    const history = useHistory();
+    // is this the Register or Settings page
+    const isRegisterPage = history.location.pathname === '/register' ? true : false;
 
     const isValidEmail = email => /^.+@.+\..+$/.test(email);
     // https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
@@ -54,8 +55,10 @@ export default function Register(props) {
     }
 
     async function isPwdCorrect() {
-        const { email, pwd } = userData;
-        return true; // TODO check pwd is correct for this email
+        // const cb = (res) => res !== -1 ? true : false;
+        // dbUsers.checkLoginInfo(userData, cb);
+        // TODO - check that pwd is correct
+        return true;
     }
 
     const checkPasswordQuality = (sourcePwdField) => userData[sourcePwdField] && userData[sourcePwdField].length > 2;
@@ -104,12 +107,13 @@ export default function Register(props) {
         if (await isPwdCorrect() && hasAllUserData) {
             let callBackResponse = data => {
                 // console.log("Data received from CallBack = ", data);
-                props.setCurrentUserData(userData);
+                props.setCurrentUserData(oldState => ({...oldState, pwd: userData.newPwd ? userData.newPwd : pwd }));
                 history.push("/");
             }
-            console.log("Will update settings");
-            // dbUsers.register(userData, callBackResponse);
-            // TODO update user data
+            // console.log("Will update settings");
+            dbUsers.updateUser(userData, callBackResponse)
+        } else {
+            console.log("maybe incorrect pwd");
         }
     }
 
@@ -150,7 +154,7 @@ export default function Register(props) {
                         ? <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
                         :
                         <>
-                            <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Old Password</UserPwdField>
+                            <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Old Password</UserPwdField>
                             <UserPwdField field={"newPwd"} value={userData.newPwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>New Password</UserPwdField>
                         </>
                     }

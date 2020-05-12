@@ -18,7 +18,7 @@ export default function BugListViewHeader(props) {
     // }
 
 
-    const bugListViewKeys = ['id', 'bugTitle', 'bugCreatedDate', 'bugAssignedTo', 'bugDueDate', 'bugStatus', 'bugSeverity', 'bugReproducibleFrequency'];
+    const bugListViewKeys = ['id', 'bugTitle', 'bugCreatedDate', 'bugAssignedTo', 'bugDueDate', 'bugStatus', 'bugSeverity', 'bugReproducibility'];
     // TODO update header names, but retain sort option with real key names
     // const bugListViewKeysToDisplay = ['id', 'title', 'createdDate', 'assigned to', 'due', 'status', 'severity', 'reproducable'];
     // debugger;

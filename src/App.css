@@ -25,10 +25,10 @@
   justify-content: flex-end;
 } */
 
-/* .dividing_line_main {
+.dividing-line-main {
   border-bottom: 1px solid var(--main-dark-text-color);
   padding: 3px 0;
-} */
+}
 
 /* .dividing_line_secondary {
   border-bottom: 1px dotted rgb(88, 88, 88);
@@ -38,8 +38,6 @@
 .error-text {
   color: var(--main-error-text-color);
 }
-
-
 
 .bold {
   font-weight: 700;
@@ -52,13 +50,6 @@
 .text-center {
   text-align: center;
 }
-
-/* .btn {
-  min-width: 15vw;
-  max-width: 20vw;
-  font-size: 1.4rem;
-  padding: 5px;
-} */
 
 * {
   margin: 0;

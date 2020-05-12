@@ -46,24 +46,46 @@ async function register(userData, callBackResponse) {
     });
 }
 
+function updateUser(data, cb) {
+    var request = require('request');
+    request({
+        method: 'POST',
+        url: 'https://bigbug-365ff5.appdrag.site/api/users/updateUser',
+        form: {
+            "id": data.id,
+            "firstName": data.firstName,
+            "lastName": data.lastName,
+            "pwd": data.newPwd ? data.newPwd : data.pwd,
+            "phone": data.phone
+        }
+    }, function (err, httpResponse, body) {
+        const result = JSON.parse(body).Table;
+        console.log("update User", result);
+        cb(result);
+    });
+}
+
 var request = require('request');
 
 function checkUniqueEmailCB(email) {
- return new Promise(function(resolve, reject) {
-  request({
-     method:'POST',
-     url:'https://bigbug-365ff5.appdrag.site/api/checkUniqueEmail', 
-     form: {"email" : email,"AD_PageNbr" : "1","AD_PageSize" : "500"}
-  }, function(err,httpResponse,body) {
-    if ( err != null ) {
-     resolve(err);
-    }
-    else {
-        let result = JSON.parse(body).Table;
-        resolve(result);
-    }
-  });
- });
+    return new Promise(function (resolve, reject) {
+        request({
+            method: 'POST',
+            url: 'https://bigbug-365ff5.appdrag.site/api/checkUniqueEmail',
+            form: {
+                "email": email,
+                "AD_PageNbr": "1",
+                "AD_PageSize": "500"
+            }
+        }, function (err, httpResponse, body) {
+            if (err != null) {
+                resolve(err);
+            } else {
+                let result = JSON.parse(body).Table;
+                resolve(result);
+            }
+        });
+    });
 }
 
 // var request = require('request');
@@ -109,6 +131,7 @@ export {
     // getHello,
     checkLoginInfo,
     register,
+    updateUser,
     checkUniqueEmailCB,
     getUsersCB
 }

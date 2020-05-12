@@ -28,6 +28,7 @@ export default function Dashboard(props) {
                 userList={props.userList}
                 bugStatusStages={props.bugStatusStages}
                 bugSeverityLevels={props.bugSeverityLevels}
+                bugReproducibilityOptions={props.bugReproducibilityOptions}
             />
         </div>
     )
