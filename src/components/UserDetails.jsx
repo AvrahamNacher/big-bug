@@ -4,7 +4,7 @@ import UserDataField from './UserDataField';
 import UserPwdField from './UserPwdField';
 import * as dbUsers from '../backend/dbUserRequests.js';
 
-import './Register.css';
+import './UserDetails.css';
 
 export default function Register(props) {
     const [userData, setUserData] = useState(props.currentUserData);

@@ -14,7 +14,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 // import BugListView from './components/BugListView';
 import Login from './components/Login';
-import Register from './components/Register';
+import Register from './components/UserDetails';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
