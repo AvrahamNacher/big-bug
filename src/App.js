@@ -60,9 +60,7 @@ function App() {
   }
 
   if (bugReproducibilityOptions.length === 0) {
-    dbBugs.getBugReproducibilityOptions(async (options) => {
-      setBugReproducibilityOptions(options); console.log("repro options")
-    });
+    dbBugs.getBugReproducibilityOptions(async (options) => setBugReproducibilityOptions(options));
   }
 
   const logout = () => {  // TODO - SPA authentification
@@ -116,19 +114,7 @@ function App() {
               setCurrentUserData={ newData => setCurrentUserData(newData)} 
               setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} />
           </Route>
-          {/* <Route path="/settings">
-            <Settings currentUserData={currentUserData} setCurrentUserData={ newData => setCurrentUserData(newData)} />
-          </Route> */}
-          <Route path="/createBug">
-            <CreateBug 
-              // currentUser={}
-              userList={userList} 
-              bugSeverityLevels={bugSeverityLevels} 
-              bugStatusStages={bugStatusStages}
-              bugReproducibilityOptions={bugReproducibilityOptions}
-            />
-          </Route>
-          <Route path="/bug/:id">
+          <Route path={["/createBug", "/bug/:id"]}>
             {/* <Sidebar /> */}
             <EditBug 
               userList={userList} 

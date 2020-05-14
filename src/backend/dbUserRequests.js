@@ -1,30 +1,66 @@
-async function checkLoginInfo(userData, callBackResponse) {
-    var request = require('request');
-    const {
-        email = '', pwd = ''
-    } = userData;
-    console.log(`email ${email} ${pwd}`);
+var request = require('request');
 
-    request({
-        method: 'POST',
-        url: 'https://bigbug-365ff5.appdrag.site/api/users/login',
-        form: {
-            "email": email,
-            "pwd": pwd,
-            "AD_PageNbr": "1",
-            "AD_PageSize": "500"
-        }
-    }, function (err, httpResponse, body) {
-        let result = JSON.parse(body);
-        if (result.Table.length !== 0) {
-            console.log("Welcome " + result.Table[0].firstName);
-            callBackResponse(result.Table[0]);
-        } else {
-            console.log("No data returned");
-            callBackResponse(-1);
-        }
+
+function checkLoginInfoPromise(userData) {
+    return new Promise(function (resolve, reject) {
+        const {
+            email = '', pwd = ''
+        } = userData;
+        request({
+            method: 'POST',
+            url: 'https://bigbug-365ff5.appdrag.site/api/users/login',
+            form: {
+                "email": email,
+                "pwd": pwd,
+                "AD_PageNbr": "1",
+                "AD_PageSize": "500"
+            }
+        }, function (err, httpResponse, body) {
+            if (err != null) {
+                resolve(err);
+            } else {
+                let result = JSON.parse(body);
+                if (result.Table.length !== 0) {
+                    console.log("Welcome " + result.Table[0].firstName);
+                    resolve(result.Table[0]);
+                } else {
+                    console.log("No data returned");
+                    resolve(-1);
+                }
+            }
+        });
     });
 }
+// var result = await loginCB();
+// console.log(result);
+
+// async function checkLoginInfo(userData, callBackResponse) {
+//     var request = require('request');
+//     const {
+//         email = '', pwd = ''
+//     } = userData;
+//     console.log(`email ${email} ${pwd}`);
+
+//     request({
+//         method: 'POST',
+//         url: 'https://bigbug-365ff5.appdrag.site/api/users/login',
+//         form: {
+//             "email": email,
+//             "pwd": pwd,
+//             "AD_PageNbr": "1",
+//             "AD_PageSize": "500"
+//         }
+//     }, function (err, httpResponse, body) {
+//         let result = JSON.parse(body);
+//         if (result.Table.length !== 0) {
+//             console.log("Welcome " + result.Table[0].firstName);
+//             callBackResponse(result.Table[0]);
+//         } else {
+//             console.log("No data returned");
+//             callBackResponse(-1);
+//         }
+//     });
+// }
 
 async function register(userData, callBackResponse) {
     var request = require('request');
@@ -65,9 +101,8 @@ function updateUser(data, cb) {
     });
 }
 
-var request = require('request');
 
-function checkUniqueEmailCB(email) {
+function checkUniqueEmailPromise(email) {
     return new Promise(function (resolve, reject) {
         request({
             method: 'POST',
@@ -129,9 +164,10 @@ function getUsersCB() {
 
 export {
     // getHello,
-    checkLoginInfo,
+    checkLoginInfoPromise,
+    // checkLoginInfo,
     register,
     updateUser,
-    checkUniqueEmailCB,
+    checkUniqueEmailPromise,
     getUsersCB
 }

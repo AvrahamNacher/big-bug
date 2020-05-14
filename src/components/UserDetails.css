@@ -1,3 +1,7 @@
+.userDetailsWindow {
+    padding: 3vw 6vw 6vw 6vw;
+  }
+
 .noPwdStrength {
     border-bottom: 4px solid black;
     width: 0%;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SelectUser from './SelectUser';
 import SelectBugSeverityLevel from './SelectBugSeverityLevel';
 import SelectBugStatus from './SelectBugStatus';
@@ -26,6 +26,9 @@ export default function CreateBug(props) {
     }
     const [newBug, setNewBug] = useState(resetBugFields());
     const [submitMessage, setSubmitMessage] = useState({ message: "Enter New Bug Details", messageType: "success", show: true });
+
+    let {pathname} = useLocation();
+    debugger;
 
     const handleInput = e => {
         const { name, value } = e.target; // destructuring

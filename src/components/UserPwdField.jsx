@@ -10,7 +10,7 @@ export default function UserPwdField(props) {
                 <span className="margin-left-30"></span>
                 {props.showPwdStengthBar && <span className={pwdStrengh}>{pwdStrengh === "lowPwdStrength" ? "(weak)" : pwdStrengh === "mediumPwdStrength" ? "(okay)" : pwdStrengh === "strongPwdStrength" ? "(strong)" : null}</span>}
             </label>
-            <input className="centeredContainerInput" onInput={props.handleInput} id="UserPwdField" name={field} type={props.showPwds[field] ? "text" : "password"} value={value}></input>
+            <input className="centeredContainerInput" onChange={props.handleInput} onInput={props.handleInput} id="UserPwdField" name={field} type={props.showPwds[field] ? "text" : "password"} value={value}></input>
             <i className={props.showPwds[field] ? "fa fa-eye-slash passwordEye" : "fa fa-eye passwordEye"} onClick={() => props.toggleShowPwd(field)}></i>
             {props.showPwdStengthBar && <div className={pwdStrengh}></div>}
         </div>

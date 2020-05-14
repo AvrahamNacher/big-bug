@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation, useHistory } from 'react-router-dom';
 import SelectUser from './SelectUser';
 import SelectBugSeverityLevel from './SelectBugSeverityLevel';
 import SelectBugReproducibility from './SelectBugReproducibility';
@@ -8,26 +8,36 @@ import UserDataField from './UserDataField';
 import * as dbBugs from '../backend/dbBugRequests';
 
 export default function EditBug(props) {
+    const { pathname } = useLocation();
+    const isCreateBug = pathname === "/createBug" ? true : false;
     function resetBugFields() {
         return (
             {
                 id: "",
                 bugTitle: "",
                 bugDescription: "",
-                bugCreatedDate: "",
+                bugCreatedDate: isCreateBug ? new Date().toISOString().split('T')[0] : "",
                 bugCreatedBy: "",
-                bugAssignedTo: "",
+                bugAssignedTo: "0",
                 bugDueDate: "",
-                bugStatus: "",
-                bugSeverity: "",
-                bugReproducibity: ""
+                bugStatus: "1",
+                bugSeverity: "1",
+                bugReproducibility: "1"
             }
         );
     }
 
-    const [submitMessage, setSubmitMessage] = useState({ message: "Edit Bug Details", messageType: "success", show: true });
+    const [submitMessage, setSubmitMessage] = useState({ message: isCreateBug ? "Enter New Bug Details" : "Edit Bug Details", messageType: "success", show: true });
     const [newBug, setNewBug] = useState(resetBugFields());
     const { bugTitle, bugDescription, bugCreatedDate, bugCreatedBy, bugAssignedTo, bugDueDate, bugStatus, bugSeverity, bugReproducibility } = newBug; // destructuring
+    const [isCreateBugState, setisCreateBugState] = useState(isCreateBug ? true : false);
+    let history = useHistory();
+
+    if (isCreateBug !== isCreateBugState) {
+        console.log("change");
+        setNewBug(resetBugFields());
+        setisCreateBugState(isCreateBug ? true : false);
+    }
 
     let { id } = useParams();
 
@@ -47,7 +57,7 @@ export default function EditBug(props) {
             bugReproducibility: response.bugReproducibility
         });
     }
-    if (newBug.id === '') { dbBugs.getBug(id, callback); }
+    if (newBug.id === '' && !isCreateBug) { dbBugs.getBug(id, callback); }
 
     // console.log ("EditBug user = " + newBug.bugAssignedTo);
     // console.log("EditBug bugSeverityLevels ", props.bugSeverityLevels);
@@ -61,7 +71,24 @@ export default function EditBug(props) {
         console.log("update callback: " + response);
     }
 
+    const submitBugCallback = result => {
+        if (result === '1') {
+            setSubmitMessage({ message: "New bug successfully entered.", messageType: "success", show: true });
+            setNewBug(resetBugFields());
+            // setSubmitMessage( current => ({...current, message: "Enter New Bug Details"}))
+        } else {
+            setSubmitMessage({ message: `Error creating bug. (${result})`, messageType: "failure", show: true });
+        }
+    }
+
+    const submitBug = e => {
+        e.preventDefault();
+        console.log("submit Bug");
+        dbBugs.submitBug(newBug, submitBugCallback);
+    }
+
     const updateBug = () => {
+        console.log("update Bug");
         dbBugs.updateBug(newBug, updateCallback);
     }
 
@@ -79,9 +106,8 @@ export default function EditBug(props) {
         <div>
             <div id="mainWindow" style={{ padding: '30px' }}>
                 {submitMessage.show && <h1>{submitMessage.message}</h1>}
-                <form onSubmit={updateBug}>
-                    <UserDataField field={"bugTitle"} value={bugTitle} handleInput={handleInput} hasAutoFocus={true}>Title</UserDataField>
-                    {/* <UserDataField field={"bugDescription"} value={bugDescription} handleInput={handleInput} hasAutoFocus={true}>Description</UserDataField> */}
+                <form>
+                    <UserDataField field={"bugTitle"} value={bugTitle} onChange={handleInput} handleInput={handleInput} hasAutoFocus={true}>Title</UserDataField>
 
                     <div className="flexColumnContainer inputFieldPadding">
                         <label className="bold" htmlFor="bugDescription">Description:</label>
@@ -95,7 +121,7 @@ export default function EditBug(props) {
                     <div className="flexRowContainer">
                         <UserDataField field={"bugCreatedDate"} value={bugCreatedDate} handleInput={handleInput} hasAutoFocus={true}>Creation Date</UserDataField>
 
-                        <SelectUser user={bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
+                        <SelectUser user={isCreateBug? bugCreatedBy : bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
                         <SelectUser user={bugAssignedTo} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })}>Assigned To</SelectUser>
 
                         <div className="flexColumnContainer inputFieldPadding">
@@ -124,7 +150,7 @@ export default function EditBug(props) {
                             <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Delete" />
                         </Link>
                         <Link to="/">
-                            <input onClick={updateBug} className="centeredContainerButton primaryButton buttonEnabled" type="button" value="Update Bug"></input>
+                            <input onClick={isCreateBug ? submitBug : updateBug} className="centeredContainerButton primaryButton buttonEnabled" type="button" value={isCreateBug ? "Submit New Bug" : "Update Bug"}></input>
                         </Link>
                     </div>
                 </form>

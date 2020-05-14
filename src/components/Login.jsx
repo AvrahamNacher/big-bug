@@ -48,7 +48,22 @@ export default function Login(props) {
                 props.setIsAuthenticated(true);
             }
         }
-        dbUser.checkLoginInfo(props.currentUserData, callBackResponse);
+        // dbUser.checkLoginInfo(props.currentUserData, callBackResponse);
+        dbUser.checkLoginInfoPromise(props.currentUserData)
+            .then( res => { 
+                console.log("after promise with res ", res);
+                if (res === -1) {
+                    setLoginError(true);
+                    setInputFocus();
+                    props.setCurrentUserData({ ...props.currentUserData, "email": "", "pwd": "" });
+    
+                } else {
+                    // debugger;
+                    setLoginError(false);
+                    props.setCurrentUserData(res);
+                    props.setIsAuthenticated(true);
+                }
+            })
     }
 
     function handleInput(target) {

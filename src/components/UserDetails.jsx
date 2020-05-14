@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import UserDataField from './UserDataField';
 import UserPwdField from './UserPwdField';
@@ -15,6 +15,12 @@ export default function Register(props) {
     // is this the Register or Settings page
     const isRegisterPage = history.location.pathname === '/register' ? true : false;
 
+    useEffect( ()=> {
+        if (!isRegisterPage) {
+            // do not reveal current pwd
+            setUserData( oldState => ({...oldState, pwd: ''}));
+        }
+    },[]);
     const isValidEmail = email => /^.+@.+\..+$/.test(email);
     // https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
     const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#_$%^&*-])(?=.{8,})");
@@ -30,7 +36,7 @@ export default function Register(props) {
             console.log("is email");
             console.log("valid?", isValidEmail(email));
             if (isValidEmail(email)) {
-                const isUnique = await dbUsers.checkUniqueEmailCB(email);
+                const isUnique = await dbUsers.checkUniqueEmailPromise(email);
                 if (isUnique.length === 0) {
                     console.log("is unique", isUnique);
                     // let callBackResponse = data => {
@@ -55,10 +61,15 @@ export default function Register(props) {
     }
 
     async function isPwdCorrect() {
-        // const cb = (res) => res !== -1 ? true : false;
-        // dbUsers.checkLoginInfo(userData, cb);
-        // TODO - check that pwd is correct
-        return true;
+        return dbUsers.checkLoginInfoPromise(userData)
+            .then( res => {
+                if (res !== -1) {
+                    return true;
+                } else {
+                    setErrorMsgs(current => ({ ...current, pwd: "Incorrect Password" }))
+                    return false;
+                }
+            })
     }
 
     const checkPasswordQuality = (sourcePwdField) => userData[sourcePwdField] && userData[sourcePwdField].length > 2;
@@ -135,7 +146,7 @@ export default function Register(props) {
     }
 
     return (
-        <div className="mainWindow">
+        <div className="userDetailsWindow">
             <div className="centeredContainer" style={{ width: 'inherit' }}>
                 <div className="bold"><h1>{isRegisterPage ? "Registration Information:" : "Update Your Settings:"}</h1></div>
                 <div className="flexRowContainer">
@@ -151,10 +162,10 @@ export default function Register(props) {
 
                 <div className="flexRowContainer">
                     {isRegisterPage
-                        ? <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
+                        ? <UserPwdField field={"pwd"} value={userData.pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Password</UserPwdField>
                         :
                         <>
-                            <UserPwdField field={"pwd"} value={pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Old Password</UserPwdField>
+                            <UserPwdField field={"pwd"} value={userData.pwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={false} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Old Password</UserPwdField>
                             <UserPwdField field={"newPwd"} value={userData.newPwd} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={true} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>New Password</UserPwdField>
                         </>
                     }
