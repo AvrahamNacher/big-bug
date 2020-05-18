@@ -102,7 +102,7 @@ export default function BugListView(props) {
         );
     }
     return (
-        <div>
+        <div id="bug_list_view_table_container">
             <table id="bug_list_view_table">
                 <thead>
                     <tr key={0}>

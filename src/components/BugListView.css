@@ -1,3 +1,8 @@
+#bug_list_view_table_container {
+    width: 100vw;
+    overflow: scroll;
+}
+
 #bug_list_view_table {
     text-align: center;
     border-collapse: collapse;
