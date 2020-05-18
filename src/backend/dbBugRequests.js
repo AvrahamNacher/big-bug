@@ -31,8 +31,13 @@ function submitBug(data, cb) {
       "bugReproducibility": bugReproducibility
     }
   }, function (err, httpResponse, body) {
-    let result = JSON.parse(body).affectedRows;
-    cb(result);
+    if (!err) {
+      let result = JSON.parse(body).affectedRows;
+      cb(result);
+    } else {
+      console.log("submitBug error ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -47,9 +52,14 @@ async function getAllBugs(cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    let result = JSON.parse(body);
-    // console.log(result);
-    cb(result.Table);
+    if (!err) {
+      let result = JSON.parse(body);
+      // console.log(result);
+      cb(result.Table);
+    } else {
+      console.log("getAllBugs error ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -65,9 +75,14 @@ function getBug(id, cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    console.log(body);
-    let response = JSON.parse(body);
-    cb(response.Table[0]);
+    // console.log(body);
+    if (!err) {
+      let response = JSON.parse(body);
+      cb(response.Table[0]);
+    } else {
+      console.log("getBug error ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -89,9 +104,14 @@ function updateBug(bug, cb) {
       "bugReproducibility": bug.bugReproducibility
     }
   }, function (err, httpResponse, body) {
-    console.log("update request", body);
-    let response = JSON.parse(body);
-    cb(response.affectedRows);
+    // console.log("update request", body);
+    if (!err) {
+      let response = JSON.parse(body);
+      cb(response.affectedRows);
+    }  else {
+      console.log ("updateBug error ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -105,9 +125,14 @@ function deleteBugs(idList, cb) {
       "idList": idList // "(id = 5) OR (id = 2)"
     }
   }, function (err, httpResponse, body) {
-    console.log(body);
-    let response = JSON.parse(body);
-    cb(response);
+    // console.log(body);
+    if (!err) {
+      let response = JSON.parse(body);
+      cb(response);
+    } else {
+      console.log ("deleteBugs error ", err);
+      cb (-1);
+    }
   });
 }
 
@@ -122,8 +147,13 @@ async function getBugSeverityLevels(cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    let response = JSON.parse(body);
-    cb(response.Table);
+    if (!err) {
+      let response = JSON.parse(body);
+      cb(response.Table);
+    } else {
+      console.log("getBugSeverityLevels error: ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -138,8 +168,13 @@ function getBugStatusStages(cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    const response = JSON.parse(body);
-    cb(response.Table);
+    if (!err) {
+      const response = JSON.parse(body);
+      cb(response.Table);
+    } else {
+      console.log("getBugStatusStages error ", err);
+      cb(-1);
+    }
   });
 }
 
@@ -154,8 +189,13 @@ function getBugReproducibilityOptions(cb) {
       "AD_PageSize": "500"
     }
   }, function (err, httpResponse, body) {
-    const response = JSON.parse(body);
-    cb(response.Table);
+    if (!err) {
+      const response = JSON.parse(body);
+      cb(response.Table);
+    } else {
+      console.log("getBugReproducibilityOptions error ", err);
+      cb(-1);
+    }
   });
 }
 

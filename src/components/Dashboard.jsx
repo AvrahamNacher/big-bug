@@ -9,7 +9,9 @@ export default function Dashboard(props) {
 
     const generateUserList = async () => {
         let list = await dbUsers.getUsersCB();
-        list.unshift({id: 0, firstName: "Unassigned", lastName: "", email: ""});
+        if (list.length) {
+            list.unshift({id: 0, firstName: "Unassigned", lastName: "", email: ""});
+        }
         props.setUserList(list);
     }
 

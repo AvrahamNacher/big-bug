@@ -18,6 +18,7 @@ import UserDetails from './components/UserDetails';
 import Dashboard from './components/Dashboard';
 import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
+import Error from './components/Error';
 import * as dbBugs from '../src/backend/dbBugRequests';
 
 import './App.css';
@@ -27,14 +28,13 @@ function App() {
   const [loading, setLoading] = useState(true);  // TODO
   const [currentUserData, setCurrentUserData] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  // const [isProgramError, setIsProgramError] = useState(false);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
   const [bugSeverityLevels, setBugSeverityLevels] = useState([]);
   const [bugStatusStages, setBugStatusStages] = useState([]);
   const [bugReproducibilityOptions, setBugReproducibilityOptions] = useState([]);
   
-  // debugger;
-
   // function checkIfAuthenticated() {
   //   fetch("http://localhost:4000/user").then( x =>
   //     x.json().then( y => {
@@ -49,7 +49,13 @@ function App() {
 
   if (bugSeverityLevels.length === 0) {
     dbBugs.getBugSeverityLevels(async (levels) => {
-      setBugSeverityLevels(levels);
+      if (levels.length) {
+        setBugSeverityLevels(levels);
+        // setIsProgramError(false);
+      } else {
+        console.log ("no length")
+        // setIsProgramError(true);
+      }
     });
   }
 
@@ -88,6 +94,7 @@ function App() {
           setIsAuthenticated={ authenticated => setIsAuthenticated(authenticated)} // enable user to log out
           currentUserData={currentUserData}
         />
+        {/* {isProgramError ? <Redirect to="/error"></Redirect> : <Redirect to="/"></Redirect> } */}
         <Switch>
           <Route exact path={["/"]}>
             { isAuthenticated
@@ -117,11 +124,15 @@ function App() {
           <Route path={["/createBug", "/bug/:id"]}>
             {/* <Sidebar /> */}
             <EditBug 
+              currentUserData={currentUserData}
               userList={userList} 
               bugSeverityLevels={bugSeverityLevels} 
               bugStatusStages={bugStatusStages}
               bugReproducibilityOptions={bugReproducibilityOptions}
             />
+          </Route>
+          <Route path="/error">
+            <Error />
           </Route>
           <Redirect to="/" />
         </Switch>

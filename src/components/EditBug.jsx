@@ -17,7 +17,7 @@ export default function EditBug(props) {
                 bugTitle: "",
                 bugDescription: "",
                 bugCreatedDate: isCreateBug ? new Date().toISOString().split('T')[0] : "",
-                bugCreatedBy: "",
+                bugCreatedBy: isCreateBug ? props.currentUserData.id : "",
                 bugAssignedTo: "0",
                 bugDueDate: "",
                 bugStatus: "1",
@@ -121,7 +121,7 @@ export default function EditBug(props) {
                     <div className="flexRowContainer">
                         <UserDataField field={"bugCreatedDate"} value={bugCreatedDate} handleInput={handleInput} hasAutoFocus={true}>Creation Date</UserDataField>
 
-                        <SelectUser user={isCreateBug? bugCreatedBy : bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
+                        <SelectUser user={bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
                         <SelectUser user={bugAssignedTo} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })}>Assigned To</SelectUser>
 
                         <div className="flexColumnContainer inputFieldPadding">
