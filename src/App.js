@@ -26,7 +26,7 @@ function App() {
   
   const [loading, setLoading] = useState(true);  // TODO
   const [currentUserData, setCurrentUserData] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const [isProgramError, setIsProgramError] = useState(false);
   const [bugList, setBugList] = useState([{id:''}]);  // default id to prevent "unique key prop" error
   const [userList, setUserList] = useState([]);
