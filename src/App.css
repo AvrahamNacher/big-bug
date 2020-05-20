@@ -35,6 +35,10 @@
   padding: 3px 0;
 } */
 
+.success-text {
+  color: var(--main-header-color);
+}
+
 .error-text {
   color: var(--main-error-text-color);
 }

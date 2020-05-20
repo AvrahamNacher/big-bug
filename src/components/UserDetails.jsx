@@ -27,6 +27,8 @@ export default function Register(props) {
     const mediumPasswordRegex = new RegExp("^(((?=.*[a-z!@#_$%^&*-])(?=.*[A-Z!@#_$%^&*-]))|((?=.*[a-z!@#_$%^&*-])(?=.*[0-9!@#_$%^&*-]))|((?=.*[A-Z!@#_$%^&*-])(?=.*[0-9!@#_$%^&*-])))(?=.{6,})");
     const lowPasswordRegex = new RegExp("^(?=.*[0-9a-zA-Z!@#_$%^&*-])(?=.{3,})");
 
+    const isValidPhone = phone => /^(\([0-9]{3}\)\s*|[0-9]{2,3}\-*)[0-9]{3}-*[0-9]{4}$/.test(phone);
+
     async function checkEmail() {
         const { email } = userData;
         // console.log("register request");
@@ -93,6 +95,10 @@ export default function Register(props) {
                 newErrorMsgs = ({ ...newErrorMsgs, pwdConfirm: "pwd doesn't match" });
                 validLoginData = false;
             }
+        }
+        if (!isValidPhone(phone)) {
+            newErrorMsgs = ({...newErrorMsgs, phone: "Invalid phone number."});
+            validLoginData = false;
         }
         setErrorMsgs(current => ({ ...current, ...newErrorMsgs }));
         return validLoginData;

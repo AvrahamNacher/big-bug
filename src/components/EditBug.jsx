@@ -5,6 +5,7 @@ import SelectBugSeverityLevel from './SelectBugSeverityLevel';
 import SelectBugReproducibility from './SelectBugReproducibility';
 import SelectBugStatus from './SelectBugStatus';
 import UserDataField from './UserDataField';
+import SuccessWindow from './SuccessWindow';
 import * as dbBugs from '../backend/dbBugRequests';
 
 export default function EditBug(props) {
@@ -28,6 +29,7 @@ export default function EditBug(props) {
     }
 
     const [submitMessage, setSubmitMessage] = useState({ message: isCreateBug ? "Enter New Bug Details" : "Edit Bug Details", messageType: "success", show: true });
+    const [successMessage, setSuccessMessage] = useState({ message: "message here", success: true, show: false });
     const [newBug, setNewBug] = useState(resetBugFields());
     const { bugTitle, bugDescription, bugCreatedDate, bugCreatedBy, bugAssignedTo, bugDueDate, bugStatus, bugSeverity, bugReproducibility } = newBug; // destructuring
     const [isCreateBugState, setisCreateBugState] = useState(isCreateBug ? true : false);
@@ -69,15 +71,21 @@ export default function EditBug(props) {
 
     const updateCallback = response => {
         console.log("update callback: " + response);
+        // debugger;
+        if (response === '1') {
+            setSuccessMessage({ message: "Bug successfully updated.", success: true, show: true });
+        } else {
+            setSuccessMessage({ message: "Error entering bug.", success: false, show: true });
+        }
     }
 
-    const submitBugCallback = result => {
-        if (result === '1') {
-            setSubmitMessage({ message: "New bug successfully entered.", messageType: "success", show: true });
+    const submitBugCallback = response => {
+        if (response === '1') {
+            setSuccessMessage({ message: "New bug successfully entered.", success: true, show: true });
             setNewBug(resetBugFields());
             // setSubmitMessage( current => ({...current, message: "Enter New Bug Details"}))
         } else {
-            setSubmitMessage({ message: `Error creating bug. (${result})`, messageType: "failure", show: true });
+            setSuccessMessage({ message: `Error creating bug. (${response})`, success: false, show: true });
         }
     }
 
@@ -87,8 +95,10 @@ export default function EditBug(props) {
         dbBugs.submitBug(newBug, submitBugCallback);
     }
 
-    const updateBug = () => {
+    const updateBug = e => {
+        e.preventDefault();
         console.log("update Bug");
+        // debugger;
         dbBugs.updateBug(newBug, updateCallback);
     }
 
@@ -105,7 +115,11 @@ export default function EditBug(props) {
     return (
         <div>
             <div id="mainWindow" style={{ padding: '30px' }}>
-                {submitMessage.show && <h1>{submitMessage.message}</h1>}
+                {submitMessage.show &&
+                    <>
+                        <h1>{submitMessage.message}</h1>
+                        <SuccessWindow message={successMessage.message} success={successMessage.success} show={successMessage.show} setShow={show => setSuccessMessage(current => ({ ...successMessage, show: show }))} />
+                    </>}
                 <form>
                     <UserDataField field={"bugTitle"} value={bugTitle} onChange={handleInput} handleInput={handleInput} hasAutoFocus={true}>Title</UserDataField>
 

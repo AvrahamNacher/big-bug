@@ -16,7 +16,6 @@ import Sidebar from './components/Sidebar';
 import Login from './components/Login';
 import UserDetails from './components/UserDetails';
 import Dashboard from './components/Dashboard';
-import CreateBug from './components/CreateBug';
 import EditBug from './components/EditBug';
 import Error from './components/Error';
 import * as dbBugs from '../src/backend/dbBugRequests';
