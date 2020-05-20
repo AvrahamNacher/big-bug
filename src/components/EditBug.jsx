@@ -133,7 +133,12 @@ export default function EditBug(props) {
                         <textarea onChange={handleInput} id="bugDescription" name="bugDescription" value={bugDescription}></textarea>
                     </div> */}
                     <div className="flexRowContainer">
-                        <UserDataField field={"bugCreatedDate"} value={bugCreatedDate} handleInput={handleInput} hasAutoFocus={true}>Creation Date</UserDataField>
+                        {/* <UserDataField field={"bugCreatedDate"} value={bugCreatedDate} handleInput={handleInput} hasAutoFocus={true}>Creation Date</UserDataField> */}
+
+                        <div className="flexColumnContainer inputFieldPadding">
+                            <label className="bold" htmlFor="bugCreatedDate">Creation Date:</label>
+                            <input className="centeredContainerInput" onChange={handleInput} type="date" id="bugCreatedDate" name="bugCreatedDate" value={bugCreatedDate}></input>
+                        </div>
 
                         <SelectUser user={bugCreatedBy} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugCreatedBy: user })}>Created By</SelectUser>
                         <SelectUser user={bugAssignedTo} userList={props.userList} onChange={user => setNewBug({ ...newBug, bugAssignedTo: user })}>Assigned To</SelectUser>

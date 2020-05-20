@@ -1,6 +1,6 @@
 #bug_list_view_table_container {
     width: 100vw;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #bug_list_view_table {

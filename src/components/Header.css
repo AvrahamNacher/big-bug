@@ -5,7 +5,8 @@ header {
     background-color: var(--main-primary-bg-color);
     width: 100vw;
     padding: var(--main-standard-text-padding) 0 var(--main-standard-text-padding) 0;
-
+    position: sticky;
+    top: 0;
 }
 
 header .menuHamberger {

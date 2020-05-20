@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import './CloseWindowButton.css';
 
 export default function SuccessWindow(props) {
-    const { setShow } = props;
+    const { setShow, setCancelTimeout } = props;
     return (
-        <div >
-            <button id="CloseWindowButton" onClick={() => setShow(false)}>Close</button>
+        <div id="CloseWindowButton">
+            <button className="centeredContainerButton tertiaryButton buttonEnabled" onClick={() => {setShow(false); setCancelTimeout(true);}}>OK</button>
         </div>
     )
 }
