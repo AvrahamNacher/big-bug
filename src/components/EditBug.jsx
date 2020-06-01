@@ -165,9 +165,11 @@ export default function EditBug(props) {
                         <Link to="/">
                             <input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '100px' }} type="button" value="Cancel" />
                         </Link>
-                        <Link to="/">
-                            <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Delete" />
-                        </Link>
+                        { !isCreateBug &&
+                            <Link to="/">
+                                <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Delete" />
+                            </Link>
+                        }
                         <Link to="/">
                             <input onClick={isCreateBug ? submitBug : updateBug} className="centeredContainerButton primaryButton buttonEnabled" type="button" value={isCreateBug ? "Submit New Bug" : "Update Bug"}></input>
                         </Link>
