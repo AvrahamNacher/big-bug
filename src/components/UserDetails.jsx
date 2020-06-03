@@ -178,7 +178,7 @@ export default function Register(props) {
                     <UserPwdField field={"pwdConfirm"} value={userData.pwdConfirm} showPwds={showPwds} toggleShowPwd={toggleShowPwd} showPwdStengthBar={false} errorMsgs={errorMsgs} handleInput={handleInput} checkPwdStrength={checkPwdStrength}>Confirm Password</UserPwdField>
                 </div>
                 <UserDataField field={"phone"} value={phone} errorMsgs={errorMsgs} handleInput={handleInput}>Phone</UserDataField>
-                <div className="flexRowContainer" style={{ justifyContent: 'center' }}>
+                <div className="flexRowContainer hideOnPrint" style={{ justifyContent: 'center' }}>
                     <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link>
                     <input className="centeredContainerButton primaryButton buttonEnabled" onClick={isRegisterPage ? (e) => register(e) : (e) => update(e)} type="button" value={isRegisterPage ? "Create Account" : "Update Settings"}></input>
                 </div>

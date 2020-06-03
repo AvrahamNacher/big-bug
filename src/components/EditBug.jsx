@@ -161,7 +161,7 @@ export default function EditBug(props) {
 
                     <div className="dividing-line-main" style={{ marginTop: '10px' }}></div>
 
-                    <div className="flex-right">
+                    <div className="flex-right hideOnPrint">
                         <Link to="/">
                             <input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '100px' }} type="button" value="Cancel" />
                         </Link>

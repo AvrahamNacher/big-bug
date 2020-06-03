@@ -207,3 +207,10 @@ a {
   }
 
 }
+
+@media print {
+  header,
+  .hideOnPrint {
+    display: none;
+  }
+}
