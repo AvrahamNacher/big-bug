@@ -15,7 +15,7 @@ export default function Header(props) {
                     <div id="headerMenu">
                         <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem">Dashboard</div></Link>
                         <Link to="/createBug" style={{ textDecoration: 'none' }}><div className="headerItem">Create Bug</div></Link>
-                        <i onClick={() => window.print()} className="fa fa-print headerItem" aria-hidden="true"></i>
+                        <Link to="#"><i onClick={() => window.print()} className="fa fa-print headerItem" aria-hidden="true"></i></Link>
                         <Link to="/settings" style={{ textDecoration: 'none' }}><i className="fa fa-cog headerItem" style={{ marginTop: '5px' }}></i></Link>
                         <Link to="/" style={{ textDecoration: 'none' }}><div className="headerItem"><span onClick={props.logout} type="text" >Logout</span></div></Link>
                     </div>

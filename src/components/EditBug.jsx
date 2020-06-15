@@ -8,6 +8,8 @@ import UserDataField from './UserDataField';
 import SuccessWindow from './SuccessWindow';
 import * as dbBugs from '../backend/dbBugRequests';
 
+import './EditBug.css';
+
 export default function EditBug(props) {
     const { pathname } = useLocation();
     const isCreateBug = pathname === "/createBug" ? true : false;
@@ -161,13 +163,13 @@ export default function EditBug(props) {
 
                     <div className="dividing-line-main" style={{ marginTop: '10px' }}></div>
 
-                    <div className="flex-right hideOnPrint">
+                    <div className="flexRowContainer hideOnPrint" style={{ justifyContent: 'center' }}>
                         <Link to="/">
-                            <input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '100px' }} type="button" value="Cancel" />
+                            <input className="centeredContainerButton tertiaryButton buttonEnabled"  type="button" value="Cancel" />
                         </Link>
                         { !isCreateBug &&
                             <Link to="/">
-                                <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Delete" />
+                                <input onClick={deleteBug} className="centeredContainerButton tertiaryButton buttonEnabled" type="button" value="Delete" />
                             </Link>
                         }
                         <Link to="/">

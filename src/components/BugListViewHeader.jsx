@@ -33,6 +33,8 @@ export default function BugListViewHeader(props) {
         keysToShow.map((key, index) => {
             return <th onClick={() => { props.setBugList(sortColumn(props, key.key)); }}
                 key={index}>
+                <i class="fa fa-sort" aria-hidden="true"></i>
+                &nbsp;
                 {key.label.toUpperCase()}
             </th>
         })

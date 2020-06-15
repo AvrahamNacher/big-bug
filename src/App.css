@@ -25,6 +25,14 @@
   justify-content: flex-end;
 } */
 
+body {
+  height: 100%;
+}
+
+option {
+  background-color: #fff; /* attempt to keep dropdown (initially covered by keypad) from turning grey on mobile */
+}
+
 .dividing-line-main {
   border-bottom: 1px solid var(--main-dark-text-color);
   padding: 3px 0;
@@ -69,7 +77,7 @@ a {
 /* Mobile first: */
 
 #app {
-  height: 100vh;
+  min-height: 100vh; /* if not enough content to fill screen, make sure the background color fills the whole viewport */
   background-color: var(--main-bg-color);
   position: relative;
 }
@@ -110,7 +118,8 @@ a {
 }
 
 .flexRowContainer {
-  display: flex;
+  display: initial;
+  /* display: flex; */
   /* justify-content: center; */
   flex-wrap: wrap;
   /* background-color: yellowgreen; */
@@ -200,7 +209,9 @@ a {
 /* For computer screens: */
 @media only screen and (min-width: 600px) {
 
-
+  .flexRowContainer {
+    display: flex;
+  }
 
   .narrowWindow {
     width: 30vw;

@@ -1,6 +1,6 @@
 /* For mobile phones: */
 header {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     color: var(--main-light-text-color);
     background-color: var(--main-primary-bg-color);
     width: 100vw;
@@ -44,3 +44,12 @@ header .menuHamberger {
     color: var(--main-highlight-text-color);
     cursor: pointer;
 }
+
+/* For computer screens: */
+@media only screen and (min-width: 600px) {
+
+    header {
+        font-size: 1.2rem;
+    }
+  
+  }

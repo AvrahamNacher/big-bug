@@ -179,7 +179,8 @@ export default function Register(props) {
                 </div>
                 <UserDataField field={"phone"} value={phone} errorMsgs={errorMsgs} handleInput={handleInput}>Phone</UserDataField>
                 <div className="flexRowContainer hideOnPrint" style={{ justifyContent: 'center' }}>
-                    <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link>
+                    {/* <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled" style={{ marginTop: '30px', marginRight: '60px', minWidth: '80px' }} type="button" value="Back"></input></Link> */}
+                    <Link to="/"><input className="centeredContainerButton tertiaryButton buttonEnabled backButton" type="button" value="Back"></input></Link>
                     <input className="centeredContainerButton primaryButton buttonEnabled" onClick={isRegisterPage ? (e) => register(e) : (e) => update(e)} type="button" value={isRegisterPage ? "Create Account" : "Update Settings"}></input>
                 </div>
             </div>
