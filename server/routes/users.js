@@ -1,6 +1,13 @@
-// const { useReducer } = require('react');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
+const jwt = require('jsonwebtoken');
+const SECRET = "just_a_random_secret";
+const createToken = ({ id, email, name }) =>
+  jwt.sign({ id, email, name }, SECRET, {
+    expiresIn: "1d"
+  });
+// const token = jwt.sign({ foo: 'bar' }, 'shhhhh');
 
 const router = require('express').Router();
 let User = require('../models/user.model');
@@ -32,9 +39,7 @@ router.route('/login').post( (req, res) => {
     User.findOne({email})
         .then(user => {
             bcrypt.compare(pwd, user.pwd)
-                .then(isMatch => {
-                    res.json(isMatch)
-                })
+                .then(isMatch => res.json( isMatch === true ? 1 : -1 ))
                 .catch(err => res.json(-1));
                 // .catch(err => res.status(400).json('Error: ' + err));
         })
