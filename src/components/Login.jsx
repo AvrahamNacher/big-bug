@@ -3,6 +3,7 @@
 
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import * as dbUser from "../backend/dbUserRequests.js";
 
 // import './Login.css'
@@ -11,7 +12,6 @@ import * as dbUser from "../backend/dbUserRequests.js";
 export default function Login(props) {
     const [loginError, setLoginError] = useState(false);
     const [showPwd, setShowPwd] = useState(false);
-
 
     // General Focus Hook
     // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
@@ -33,6 +33,27 @@ export default function Login(props) {
     }
 
     function login() {
+        console.log("new login request", props.currentUserData);
+        const currentUserData = props.currentUserData;
+        axios.post('http://localhost:5000/users/login', currentUserData)
+            .then(res => {
+                let data = res.data;
+                console.log("result of login = ", res.data);
+                if (data === -1) {
+                    setLoginError(true);
+                    setInputFocus();
+                    props.setCurrentUserData({ ...props.currentUserData, "email": "", "pwd": "" });
+    
+                } else {
+                    // debugger;
+                    setLoginError(false);
+                    props.setCurrentUserData(data);
+                    props.setIsAuthenticated(true);
+                }
+        });
+    }
+
+    function login2() {
         console.log("login request");
         let callBackResponse = data => {
             console.log("Data received from CallBack = ", data);

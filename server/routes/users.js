@@ -26,17 +26,20 @@ router.route('/add').post( (req, res) => {
     });
 });
 
-router.route('/login').get( (req, res) => {
+router.route('/login').post( (req, res) => {
     const { email, pwd } = req.body;
+    console.log("login ", req.body);
     User.findOne({email})
         .then(user => {
             bcrypt.compare(pwd, user.pwd)
                 .then(isMatch => {
                     res.json(isMatch)
                 })
-                .catch(err => res.status(400).json('Error: ' + err));
+                .catch(err => res.json(-1));
+                // .catch(err => res.status(400).json('Error: ' + err));
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.json(-1));
+        // .catch(err => res.status(400).json('Error2: ' + err));
 });
 
 module.exports = router;
