@@ -23,10 +23,10 @@ connection.once('open', () => {
 
 // make server aware of routes 'users' and 'bugs'
 const usersRouter = require('./routes/users');
-// const bugsRouter = require('./routes/bugs');
+const bugsRouter = require('./routes/bugs');
 
 app.use('/users', usersRouter);
-// app.use('/bugs', bugsRouter);
+app.use('/bugs', bugsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

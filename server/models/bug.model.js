@@ -1,4 +1,6 @@
-const { Schema } = require("mongoose");
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const bugSchema = new Schema({
     bugTitle: {
@@ -43,6 +45,6 @@ const bugSchema = new Schema({
     timestamps: true
 });
 
-const Bug = mongoose.model('User', bugSchema);
+const Bug = mongoose.model('Bug', bugSchema);
 
 module.exports = Bug;
