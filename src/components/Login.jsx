@@ -38,7 +38,7 @@ export default function Login(props) {
         axios.post('http://localhost:5000/users/login', currentUserData)
             .then(res => {
                 let data = res.data;
-                // console.log("result of login = ", res.data);
+                console.log("result of login = ", res.data);
                 if (data === -1) {
                     setLoginError(true);
                     setInputFocus();

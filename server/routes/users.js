@@ -33,18 +33,40 @@ router.route('/add').post( (req, res) => {
     });
 });
 
-router.route('/login').post( (req, res) => {
+router.route('/login').post( async (req, res) => {
     const { email, pwd } = req.body;
     console.log("login ", req.body);
-    User.findOne({email})
+    // try {
+    //     const user = await User.findOne({email});
+
+    // } catch (err) {
+
+    // }
+    // console.log("user is = ", user);
+    
+    // if (user) {
+    //     const match = await bcrypt.compare(password, user.passwordHash);
+ 
+    //     if(match) {
+    //         //login
+    //     }
+    // }
+        User.findOne({email})
         .then(user => {
             bcrypt.compare(pwd, user.pwd)
-                .then(isMatch => res.json( isMatch === true ? 1 : -1 ))
+                .then(isMatch => {
+                    let token = jwt.sign({
+                        firstname: user.firstName,
+                        lastname: user.lastName
+                        
+                      }, SECRET, { expiresIn: "1d" });
+                    res.json( isMatch === true ? user : -1 )
+                })
                 .catch(err => res.json(-1));
-                // .catch(err => res.status(400).json('Error: ' + err));
+                // .catch(err => res.status(401).json('Error: ' + err));
         })
         .catch(err => res.json(-1));
-        // .catch(err => res.status(400).json('Error2: ' + err));
+        // .catch(err => res.status(401).json('Error2: ' + err));
 });
 
 module.exports = router;
