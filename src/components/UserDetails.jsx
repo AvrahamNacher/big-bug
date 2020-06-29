@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
+import axios from 'axios';
 import UserDataField from './UserDataField';
 import UserPwdField from './UserPwdField';
 import * as dbUsers from '../backend/dbUserRequests.js';
@@ -31,6 +32,7 @@ export default function Register(props) {
 
     async function checkEmail() {
         const { email } = userData;
+        let isUnique = false;
         // console.log("register request");
         console.log('email = ', email);
         console.log('errorMsgs = ', errorMsgs);
@@ -38,13 +40,15 @@ export default function Register(props) {
             console.log("is email");
             console.log("valid?", isValidEmail(email));
             if (isValidEmail(email)) {
-                const isUnique = await dbUsers.checkUniqueEmailPromise(email);
-                if (isUnique.length === 0) {
+                // const isUnique = await dbUsers.checkUniqueEmailPromise(email);
+                try {
+                    isUnique = await axios.post('http://localhost:5000/users/isUnique', {email});
+                    console.log("isUnique response = ", isUnique);
+                } catch (err) {
+                    console.log ("checkEmail Error ", err);
+                }
+                if (isUnique.data) {
                     console.log("is unique", isUnique);
-                    // let callBackResponse = data => {
-                    //     console.log("Data received from CallBack = ", data);
-                    // }
-                    // dbUsers.register(userData, callBackResponse);
                     return true;
                 } else {
                     console.log("not unique", isUnique);
@@ -63,9 +67,10 @@ export default function Register(props) {
     }
 
     async function isPwdCorrect() {
-        return dbUsers.checkLoginInfoPromise(userData)
+        return await axios.post('http://localhost:5000/users/login', userData)
             .then( res => {
-                if (res !== -1) {
+                console.log("isPwdCorrect ", res);
+                if (res.status === 200) {
                     return true;
                 } else {
                     setErrorMsgs(current => ({ ...current, pwd: "Incorrect Password" }))
@@ -108,13 +113,14 @@ export default function Register(props) {
         e.preventDefault();
         let hasAllUserData = checkUserData("pwd");
         if (await checkEmail() && hasAllUserData) {
-            let callBackResponse = data => {
-                // console.log("Data received from CallBack = ", data);
-                props.setIsAuthenticated(true);
-                props.setCurrentUserData(userData);
-                history.push("/");
-            }
-            dbUsers.register(userData, callBackResponse);
+            axios.post('http://localhost:5000/users/register', userData)
+                .then(res => {
+                    let data = res.data;
+                    console.log("result of register = ", data);
+                    props.setIsAuthenticated(true);
+                    props.setCurrentUserData(userData);
+                    history.push("/");
+                })
         }
     }
 
@@ -122,13 +128,12 @@ export default function Register(props) {
         e.preventDefault();
         let hasAllUserData = checkUserData("newPwd");
         if (await isPwdCorrect() && hasAllUserData) {
-            let callBackResponse = data => {
-                // console.log("Data received from CallBack = ", data);
-                props.setCurrentUserData(oldState => ({...oldState, pwd: userData.newPwd ? userData.newPwd : pwd }));
-                history.push("/");
-            }
-            // console.log("Will update settings");
-            dbUsers.updateUser(userData, callBackResponse)
+            axios.post('http://localhost:5000/users/update', userData)
+                .then (data => {
+                    console.log("Data received from update = ", data);
+                    props.setCurrentUserData({...userData, pwd: userData.newPwd ? userData.newPwd : pwd });
+                    history.push("/");
+                })
         } else {
             console.log("maybe incorrect pwd");
         }

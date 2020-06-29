@@ -18,24 +18,63 @@ router.route('/').get( (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post( (req, res) => {
+router.route('/isUnique').post( async (req, res) => {
+    const { email } = req.body;
+    // console.log("is Unique email ", email);
+    try {
+        const isUnique = await User.findOne ({email}) ? false : true;
+        // console.log("unique? ", isUnique);
+        res.status(200).json(isUnique);
+    } catch (err) {
+        res.status(400).json("Error: " + err)
+    }
+});
+
+router.route('/register').post( async (req, res) => {
     const {firstName, lastName, email, pwd, phone, landingPage} = req.body;
+    // console.log("register ", req.body);
 
     bcrypt.hash(pwd, saltRounds).then(function(hash) {
-        // Store hash in your password DB.
-        console.log('hash = ', hash);
+        // Store hash in your password DB
+        // console.log('hash = ', hash);
         const newUser = new User({firstName, lastName, email, pwd: hash, phone, landingPage});
-        console.log("email = ", req.body);
-    
         newUser.save()
             .then( () => res.json('User added!'))
             .catch(err => res.status(400).json('Error: ' + err));
     });
 });
 
+router.route('/update').post( async (req, res) => {
+    const {firstName, lastName, email, newPwd, phone, landingPage} = req.body;
+    // console.log("register ", req.body);
+    let updateData = {firstName, lastName, email, phone, landingPage};
+
+    if (newPwd) {
+        let hashedPwd = await bcrypt.hash(newPwd, saltRounds);
+        // console.log("hashedPwd = ", hashedPwd);
+        updateData = {...updateData, pwd: hashedPwd};
+    } 
+    // console.log("updateData = ", updateData);
+
+    try {
+        User.updateOne({email}, updateData)
+            .then( () => res.json('User updated!'))
+            .catch(err => res.status(400).json('Error: ' + err));
+
+    } catch (err) {
+        res.json('Error: ' + err);
+    }
+
+    // res.json("Done");
+    // bcrypt.hash(pwd, saltRounds).then(function(hash) {
+    //     // Store hash in your password DB
+    //     // console.log('hash = ', hash);
+    // });
+});
+
 router.route('/login').post( async (req, res) => {
     const { email, pwd } = req.body;
-    console.log("login ", req.body);
+    // console.log("login ", req.body);
     try {
         const user = await User.findOne({email});
         const isMatch = await bcrypt.compare(pwd, user.pwd);
@@ -56,5 +95,14 @@ router.route('/login').post( async (req, res) => {
         res.json('Error: ' + err);
     }
 });
+
+// router.route('/register').post( async (req, res) => {
+//     const { email, pwd, firstName, lastName, phone } = req.body;
+//     console.log("register ", req.body);
+
+//     const result = await User.
+
+//     res.json("Done");
+// })
 
 module.exports = router;

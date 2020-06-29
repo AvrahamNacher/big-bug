@@ -4,10 +4,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as dbUser from "../backend/dbUserRequests.js";
-
-// import './Login.css'
-
 
 export default function Login(props) {
     const [loginError, setLoginError] = useState(false);
@@ -39,7 +35,7 @@ export default function Login(props) {
             .then(res => {
                 let data = res.data;
                 console.log("result of login = ", res.data);
-                if (data === -1 || data.length === 0) {
+                if (!data.email) {
                     setLoginError(true);
                     setInputFocus();
                     props.setCurrentUserData({ ...props.currentUserData, "email": "", "pwd": "" });
