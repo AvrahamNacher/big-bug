@@ -36,37 +36,25 @@ router.route('/add').post( (req, res) => {
 router.route('/login').post( async (req, res) => {
     const { email, pwd } = req.body;
     console.log("login ", req.body);
-    // try {
-    //     const user = await User.findOne({email});
+    try {
+        const user = await User.findOne({email});
+        const isMatch = await bcrypt.compare(pwd, user.pwd);
 
-    // } catch (err) {
+        // let token = jwt.sign({
+        //     firstname: user.firstName,
+        //     lastname: user.lastName
+            
+        //     }, SECRET, { expiresIn: "1d" });
 
-    // }
-    // console.log("user is = ", user);
-    
-    // if (user) {
-    //     const match = await bcrypt.compare(password, user.passwordHash);
- 
-    //     if(match) {
-    //         //login
-    //     }
-    // }
-        User.findOne({email})
-        .then(user => {
-            bcrypt.compare(pwd, user.pwd)
-                .then(isMatch => {
-                    let token = jwt.sign({
-                        firstname: user.firstName,
-                        lastname: user.lastName
-                        
-                      }, SECRET, { expiresIn: "1d" });
-                    res.json( isMatch === true ? user : -1 )
-                })
-                .catch(err => res.json(-1));
-                // .catch(err => res.status(401).json('Error: ' + err));
-        })
-        .catch(err => res.json(-1));
-        // .catch(err => res.status(401).json('Error2: ' + err));
+        if (isMatch) {
+            res.status(200).json(user); // status: OK
+        } else {
+            res.status(204).json(-1);  // status: no content
+        }
+
+    } catch (err) {
+        res.json('Error: ' + err);
+    }
 });
 
 module.exports = router;

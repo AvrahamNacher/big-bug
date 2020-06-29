@@ -39,7 +39,7 @@ export default function Login(props) {
             .then(res => {
                 let data = res.data;
                 console.log("result of login = ", res.data);
-                if (data === -1) {
+                if (data === -1 || data.length === 0) {
                     setLoginError(true);
                     setInputFocus();
                     props.setCurrentUserData({ ...props.currentUserData, "email": "", "pwd": "" });
